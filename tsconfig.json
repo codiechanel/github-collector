@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "outDir": "out",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "react"
+  },
+  "include": [
+    "src/**/*",
+    "typings.d.ts",
+    "typings/*.d.ts"
+  ],
+  "exclude": [
+    "public",
+    "out",
+    "node_modules"
+  ]
+}
