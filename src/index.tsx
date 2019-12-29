@@ -5,12 +5,14 @@ import { SimpleDialog } from '@rmwc/dialog'
 import { ThemeProvider } from '@rmwc/theme'
 import { Typography } from '@rmwc/typography'
 import { TextField } from '@rmwc/textfield'
-import palette from './Palette'
+import palette from './common/Palette'
 import { createGlobalStyle } from 'styled-components'
 import { useRef } from 'react'
 import Tags from './components/Tags'
+import { navigate, Router } from '@reach/router'
 
-import store from './Store'
+import store from './common/Store'
+import Packages from './components/Packages'
 const GlobalStyle = createGlobalStyle`
  		body {
 		background-color: ${palette.backGround};
@@ -46,7 +48,7 @@ function CreateTagButton(props) {
       </SimpleDialog>
 
       <Button raised onClick={() => setOpen(true)}>
-        Open Simple Dialog
+        Create Tag
       </Button>
     </>
   )
@@ -76,7 +78,10 @@ function App(props) {
       <GlobalStyle />
 
       <CreateTagButton />
-      <Tags />
+      <Router>
+        <Tags path="/" />
+        <Packages path="packages" />
+      </Router>
     </ThemeProvider>
   )
 }

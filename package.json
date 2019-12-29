@@ -2,6 +2,7 @@
 	"name": "react-container-template",
 	"version": "0.1.0",
 	"dependencies": {
+		"@reach/router": "^1.2.1",
 		"antd": "3.26.4",
 		"dayjs": "1.8.18",
 		"mobx": "^5.15.1",

@@ -7,11 +7,19 @@ import { app } from './stitch'
 // import api from "../common/api";
 // import axios from "axios";
 import { action } from 'mobx'
+import api from './Api'
 
 class Store {
+  @observable
+  selectedTagId = null
+  packages = observable.map(new Map(), { deep: false })
+  allPackages = observable.map(new Map(), { deep: false })
   // categories = observable.map(new Map(), { deep: false });
   tags = observable.map(new Map(), { deep: false })
 
+  async fetchPackages() {
+    await api.fetchPackagesByTag(this.selectedTagId)
+  }
   async saveTag(name) {
     const db = app
       .getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas')
