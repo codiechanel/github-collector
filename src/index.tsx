@@ -1,21 +1,52 @@
+import {navigate, Router} from '@reach/router'
+import {Button} from '@rmwc/button'
+import '@rmwc/circular-progress/circular-progress.css'
+import {SimpleDialog} from '@rmwc/dialog'
+import {TextField} from '@rmwc/textfield'
+import {ThemeProvider} from '@rmwc/theme'
+import {
+    TopAppBar,
+    TopAppBarActionItem,
+    TopAppBarFixedAdjust,
+    TopAppBarRow,
+    TopAppBarSection,
+    TopAppBarTitle
+} from '@rmwc/top-app-bar'
 import * as React from 'react'
+import {useRef} from 'react'
 import * as ReactDOM from 'react-dom'
-import { Button } from '@rmwc/button'
-import { SimpleDialog } from '@rmwc/dialog'
-import { ThemeProvider } from '@rmwc/theme'
-import { Typography } from '@rmwc/typography'
-import { TextField } from '@rmwc/textfield'
+import styled, {createGlobalStyle} from 'styled-components'
 import palette from './common/Palette'
-import { createGlobalStyle } from 'styled-components'
-import { useRef } from 'react'
-import Tags from './components/Tags'
-import { navigate, Router } from '@reach/router'
-
 import store from './common/Store'
 import Packages from './components/Packages'
+import Tags from './components/Tags'
+
 const GlobalStyle = createGlobalStyle`
+html {
+
+
+  display: flex;
+	flex: 1;
+	width: 100vw;
+  height: 100vh;
+  flex-direction: row;
+}
+#root {
+  display: flex;
+	flex: 1;
+	flex-direction: column;
+  //background-color: pink;
+}
  		body {
-		background-color: ${palette.backGround};
+      margin: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex: 1;
+
+  
+		/* background-color: ${palette.backGround}; */
 							/* color: hotpink !important; */
 						}
 						.mdc-tab .mdc-tab__text-label {
@@ -25,70 +56,120 @@ const GlobalStyle = createGlobalStyle`
 							color: steelblue;
 						}
 `
+
 function CreateTagButton(props) {
-  const inputEl = useRef(null)
-  const [open, setOpen] = React.useState(false)
-  return (
-    <>
-      <SimpleDialog
-        title="This is a simple dialog"
-        // body="You can pass the body prop or children."
-        open={open}
-        onClose={evt => {
-          console.log(inputEl.current.value)
-          if (evt.detail.action === 'accept') {
-            store.saveTag(inputEl.current.value)
-          }
+    const inputEl = useRef(null)
+    const [open, setOpen] = React.useState(false)
+    return (
+        <>
+            <SimpleDialog
+                title="This is a simple dialog"
+                // body="You can pass the body prop or children."
+                open={open}
+                onClose={evt => {
+                    console.log(inputEl.current.value)
+                    if (evt.detail.action === 'accept') {
+                        store.saveTag(inputEl.current.value)
+                    }
 
-          console.log(evt.detail.action)
-          setOpen(false)
-        }}
-      >
-        <TextField inputRef={inputEl} label="standard..." />
-      </SimpleDialog>
+                    console.log(evt.detail.action)
+                    setOpen(false)
+                }}
+            >
+                <TextField inputRef={inputEl} label="standard..."/>
+            </SimpleDialog>
 
-      <Button raised onClick={() => setOpen(true)}>
-        Create Tag
-      </Button>
-    </>
-  )
+            <Button raised onClick={() => setOpen(true)}>
+                Create Tag
+            </Button>
+        </>
+    )
 }
-function App(props) {
-  console.log('oops', process.env.cool)
-  store.login()
-  return (
-    <ThemeProvider
-      options={{
-        primary: palette.primary,
-        secondary: 'blue',
-        primaryBg: 'pink',
-        secondaryBg: 'pink',
-        surface: palette.backGround,
-        // background: 'magenta',
-        textPrimaryOnBackground: 'white',
-        // used by subtitle
-        textSecondaryOnBackground: 'slategrey',
-        textIconOnBackground: 'slategrey',
-        textPrimaryOnLight: 'white',
-        textSecondaryOnLight: 'white',
-        textHintOnBackground: 'white',
-        textHintOnLight: 'white'
-      }}
-    >
-      <GlobalStyle />
 
-      <CreateTagButton />
-      <Router>
-        <Tags path="/" />
-        <Packages path="packages" />
-      </Router>
-    </ThemeProvider>
-  )
+type PanelProp = {
+    flexDirection: string
+    flex?: number
+}
+export const Panel = styled.div<PanelProp>`
+  display: flex;
+  background-color: steelblue;
+  /* flex-direction: column; */
+
+  /* justify-content: flex-start;  */
+  /* align items in Main Axis */
+  /* align-items: stretch;  */
+  /* align items in Cross Axis */
+  /* align-content: stretch; */
+  flex-direction: ${props => props.flexDirection};
+  flex: 1;
+  /* flex: ${({flex = 1}) => flex}; */
+  /* height: 100%; */
+  /* align-items: stretch; */
+`
+export const Panel2 = styled.div<PanelProp>`
+  display: flex;
+  background-color: steelblue;
+  flex-direction: ${props => props.flexDirection};
+  flex: ${({flex = 1}) => flex};
+  height: 100%;
+  align-items: stretch;
+`
+
+function App(props) {
+    console.log('oops', process.env.cool)
+    store.login()
+    return (
+        <ThemeProvider
+            options={{
+                primary: palette.primary,
+                secondary: 'blue',
+                primaryBg: 'pink',
+                secondaryBg: 'pink',
+                surface: palette.backGround,
+                // background: 'magenta',
+                textPrimaryOnBackground: 'white',
+                // used by subtitle
+                textSecondaryOnBackground: 'slategrey',
+                textIconOnBackground: 'slategrey',
+                textPrimaryOnLight: 'white',
+                textSecondaryOnLight: 'white',
+                textHintOnBackground: 'white',
+                textHintOnLight: 'white'
+            }}
+        >
+            <GlobalStyle/>
+            <Panel flexDirection="column">
+                {/* <TopAppBar>
+          <TopAppBarRow>
+            <TopAppBarSection>
+              <TopAppBarTitle>NewsApp</TopAppBarTitle>
+            </TopAppBarSection>
+            <TopAppBarSection alignEnd>
+              <TopAppBarActionItem
+                onClick={() => {
+                  // api.fetchGoogleNews(item.keyword);
+                  navigate(`search`, { replace: false })
+                }}
+                icon="search"
+              />
+            </TopAppBarSection>
+          </TopAppBarRow>
+        </TopAppBar>
+        <TopAppBarFixedAdjust /> */}
+
+                {/* <CreateTagButton /> */}
+                <Router>
+                    <Tags path="/"/>
+                    <Packages path="packages"/>
+                </Router>
+            </Panel>
+        </ThemeProvider>
+    )
 }
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-  // <Hello compiler="TypeScript" framework="React" />,
-  // document.getElementById("root")
+    <App/>,
+    document.getElementById('root')
+    // <Hello compiler="TypeScript" framework="React" />,
+    // document.getElementById("root")
 )

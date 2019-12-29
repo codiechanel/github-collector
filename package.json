@@ -1,8 +1,10 @@
 {
 	"name": "react-container-template",
 	"version": "0.1.0",
+	
 	"dependencies": {
 		"@reach/router": "^1.2.1",
+		"@rmwc/button": "^5.7.2",
 		"antd": "3.26.4",
 		"dayjs": "1.8.18",
 		"mobx": "^5.15.1",
@@ -21,6 +23,7 @@
 		"concurrently": "^5.0.2",
 		"css-loader": "3.4.0",
 		"live-server": "1.2.1",
+		"pnp-webpack-plugin": "^1.5.0",
 		"style-loader": "1.1.2",
 		"ts-loader": "6.2.1",
 		"typescript": "3.7.4",

@@ -1,5 +1,6 @@
 const path = require('path');
 var webpack = require('webpack');
+const PnpWebpackPlugin = require(`pnp-webpack-plugin`);
 
 /* const autoprefixer = require('autoprefixer')
 const postCSSLoaderOptions = {
@@ -32,6 +33,7 @@ module.exports = {
 		// publicPath: "/public/"
 	},
 	resolve: {
+	
 		alias: {
 			moment: 'dayjs',
 			'@ant-design/icons/lib/dist$': path.resolve(__dirname, './src/icons.js')
@@ -39,6 +41,7 @@ module.exports = {
 		// Add '.ts' and '.tsx' as resolvable extensions.
 		extensions: ['.ts', '.tsx', '.js', '.json']
 	},
+
 	module: {
 		rules: [
 			{
