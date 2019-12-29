@@ -8,6 +8,9 @@ import { TextField } from '@rmwc/textfield'
 import palette from './Palette'
 import { createGlobalStyle } from 'styled-components'
 import { useRef } from 'react'
+import Tags from './components/Tags'
+
+import store from './Store'
 const GlobalStyle = createGlobalStyle`
  		body {
 		background-color: ${palette.backGround};
@@ -31,6 +34,9 @@ function CreateTagButton(props) {
         open={open}
         onClose={evt => {
           console.log(inputEl.current.value)
+          if (evt.detail.action === 'accept') {
+            store.saveTag(inputEl.current.value)
+          }
 
           console.log(evt.detail.action)
           setOpen(false)
@@ -47,6 +53,7 @@ function CreateTagButton(props) {
 }
 function App(props) {
   console.log('oops', process.env.cool)
+  store.login()
   return (
     <ThemeProvider
       options={{
@@ -67,9 +74,9 @@ function App(props) {
       }}
     >
       <GlobalStyle />
-      <Typography use="body1">hello cool nice</Typography>
-      <Button label="Button" />
+
       <CreateTagButton />
+      <Tags />
     </ThemeProvider>
   )
 }

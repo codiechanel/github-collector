@@ -3,23 +3,24 @@
 	"version": "0.1.0",
 	"dependencies": {
 		"antd": "3.26.4",
-
 		"dayjs": "1.8.18",
+		"mobx": "^5.15.1",
+		"mobx-react": "^6.1.4",
+		"mongodb-stitch-browser-sdk": "^4.7.1",
 		"react": "^16.9.0",
 		"react-dom": "^16.9.0",
 		"rmwc": "5.7.2",
-
 		"styled-components": "4.4.1"
 	},
 	"devDependencies": {
-		"@types/styled-components": "4.4.1",
 		"@types/node": "13.1.0",
-		"style-loader": "1.1.2",
-		"css-loader": "3.4.0",
 		"@types/react": "latest",
 		"@types/react-dom": "latest",
+		"@types/styled-components": "4.4.1",
 		"concurrently": "^5.0.2",
+		"css-loader": "3.4.0",
 		"live-server": "1.2.1",
+		"style-loader": "1.1.2",
 		"ts-loader": "6.2.1",
 		"typescript": "3.7.4",
 		"webpack": "4.41.4",
@@ -36,7 +37,11 @@
 		"devOLDD": "webpack-dev-server --content-base public/"
 	},
 	"browserslist": {
-		"production": [">0.2%", "not dead", "not op_mini all"],
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
 		"development": [
 			"last 1 chrome version",
 			"last 1 firefox version",
