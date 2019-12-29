@@ -1,10 +1,11 @@
 import store from '../common/Store'
 import * as React from 'react'
 import { observer } from 'mobx-react'
-import { List, ListItem } from '@rmwc/list'
+import { List, ListItem , CollapsibleList, SimpleListItem} from '@rmwc/list'
 import { useEffect, useState } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import { CircularProgress } from '@rmwc/circular-progress'
+import '@rmwc/list/collapsible-list.css';
 function useLoader() {
   const [data, setData] = useState('loading')
   useEffect(() => {
@@ -51,7 +52,20 @@ function Packages(props) {
     content = (
       <List>
         {list.map(([key, item]) => (
-          <ListItem key={key}>{item.name}</ListItem>
+            <CollapsibleList  key={key}
+                handle={
+                  <SimpleListItem
+                      text={item.name}
+                      graphic="favorite"
+                      metaIcon="chevron_right"
+                  />
+                }
+                onOpen={() => console.log('open')}
+                onClose={() => console.log('close')}
+            >
+              <div>hello</div>
+            </CollapsibleList>
+          // <ListItem key={key}>{item.name}</ListItem>
         ))}
       </List>
     )
