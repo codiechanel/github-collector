@@ -143,7 +143,18 @@ const SortPanel = observer (props => {
         {
             label: 'monthlyDownloads',
             value: 'monthlyDownloads'
-        }
+        },
+        ,
+        {
+            label: 'percent',
+            value: 'percent'
+        },
+        ,
+        {
+            label: 'yearlyDownloads',
+            value: 'yearlyDownloads'
+        },
+
     ];
     return  <div style={{height: 100}}><Select enhanced value={store.selectedSort} onChange={(e) => store.changeSort(e.currentTarget.value)} label="Standard"
                          options={options}/></div>
