@@ -9,6 +9,9 @@ import { app } from './stitch'
 import { action } from 'mobx'
 import store from './Store'
 class Api {
+   formatNumber(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+  }
   async fetchPackagesByTag(id = null) {
     const db = app
       .getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas')
@@ -28,7 +31,7 @@ class Api {
       store.packages.clear()
       for (let x of items) {
         // let id = x["_id"].toString();
-        // console.log("x", x.name);
+        console.log("x", x);
         // @ts-ignore
         store.packages.set(x.name, x)
         // @ts-ignore

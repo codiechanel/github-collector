@@ -20,6 +20,7 @@ import palette from './common/Palette'
 import store from './common/Store'
 import Packages from './components/Packages'
 import Tags from './components/Tags'
+import SearchPage from "./components/SearchPage";
 
 const GlobalStyle = createGlobalStyle`
 html {
@@ -46,7 +47,7 @@ html {
 	flex: 1;
 
   
-		/* background-color: ${palette.backGround}; */
+		 background-color: ${palette.backGround}; 
 							/* color: hotpink !important; */
 						}
 						.mdc-tab .mdc-tab__text-label {
@@ -92,7 +93,7 @@ type PanelProp = {
 }
 export const Panel = styled.div<PanelProp>`
   display: flex;
-  background-color: steelblue;
+  //background-color: steelblue;
   /* flex-direction: column; */
 
   /* justify-content: flex-start;  */
@@ -139,7 +140,7 @@ function App(props) {
         >
             <GlobalStyle/>
             <Panel flexDirection="column">
-                {/* <TopAppBar>
+                 <TopAppBar>
           <TopAppBarRow>
             <TopAppBarSection>
               <TopAppBarTitle>NewsApp</TopAppBarTitle>
@@ -148,19 +149,20 @@ function App(props) {
               <TopAppBarActionItem
                 onClick={() => {
                   // api.fetchGoogleNews(item.keyword);
-                  navigate(`search`, { replace: false })
+                  navigate(`searchPage`, { replace: false })
                 }}
                 icon="search"
               />
             </TopAppBarSection>
           </TopAppBarRow>
         </TopAppBar>
-        <TopAppBarFixedAdjust /> */}
+        <TopAppBarFixedAdjust />
 
                 {/* <CreateTagButton /> */}
                 <Router>
                     <Tags path="/"/>
                     <Packages path="packages"/>
+                    <SearchPage path="searchPage"/>
                 </Router>
             </Panel>
         </ThemeProvider>
