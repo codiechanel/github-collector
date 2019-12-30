@@ -7,10 +7,10 @@ import { Typography } from '@rmwc/typography'
 import { navigate } from '@reach/router'
 
 function Tags(props) {
-  let list: any = Array.from(store.tags)
+  // let list: any = Array.from(store.tags)
   return (
     <List>
-      {list.map(([key, item]) => (
+      {store.tagsArray.map(([key, item]) => (
         <ListItem
           key={key}
           onClick={() => {

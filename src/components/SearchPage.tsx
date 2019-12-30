@@ -2,7 +2,7 @@ import {observer} from "mobx-react";
 import * as React from 'react'
 import store from "../common/Store";
 import { TextField } from '@rmwc/textfield';
-import { List, ListItem } from '@rmwc/list';
+import { List, ListItem, SimpleListItem } from '@rmwc/list';
 import {useEffect, useState} from "react";
 import axios from 'axios';
 
@@ -25,9 +25,11 @@ const SuggestionResults = observer(props => {
             let url = `https://api.npms.io/v2/search/suggestions?q=${keyword}`;
 
             const {data} = await axios.get(url)
+            console.log('data', data);
             const result = []
             for (const x of data) {
-                result.push(x.package.name)
+                console.log(x)
+                result.push(x)
             }
 
 
@@ -35,27 +37,34 @@ const SuggestionResults = observer(props => {
         };
         fetchData(inputValue).then();
     }, [inputValue]);
-    console.log(options);
+
 
     return (
-        <List>
-            {options.map(option => (
-                <ListItem
-                    key={option}
+        <List twoLine>
+            {options.map(option => {
+                let name = option.package.name
+                let description = option.package.description
+                let score =  option.score.final.toFixed(2);
+                return (
+                <SimpleListItem
+                    key={name}
+                    text={name}
+                    meta={score}
+                    secondaryText={description}
                     onClick={() => {
-                        if (store.allPackages.get(option)) {
+                        if (store.allPackages.get(name)) {
                             // already exist
                             console.log("already exist");
                             // store.refreshPackage(option).then(res => {});
                         } else {
                             console.log("addPackage");
-                            store.addPackage(option).then(res => {});
+                            store.addPackage(name).then(res => {});
                         }
                         window.history.back()
                     }}>
-                    {option}
-                </ListItem>
-            ))}
+
+                </SimpleListItem>
+            ) } )}
         </List>
     );
 });

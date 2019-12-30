@@ -25,26 +25,26 @@ import SearchPage from "./components/SearchPage";
 const GlobalStyle = createGlobalStyle`
 html {
 
-
+/*
   display: flex;
 	flex: 1;
 	width: 100vw;
   height: 100vh;
-  flex-direction: row;
+  flex-direction: row;*/
 }
 #root {
-  display: flex;
+ /* display: flex;
 	flex: 1;
-	flex-direction: column;
+	flex-direction: column;*/
   //background-color: pink;
 }
  		body {
-      margin: 0px;
+     /* margin: 0px;
 	padding: 0px;
 	width: 100%;
 	height: 100%;
 	display: flex;
-	flex: 1;
+	flex: 1;*/
 
   
 		 background-color: ${palette.backGround}; 
