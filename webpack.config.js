@@ -1,6 +1,6 @@
 const path = require('path');
 var webpack = require('webpack');
-const PnpWebpackPlugin = require(`pnp-webpack-plugin`);
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 /* const autoprefixer = require('autoprefixer')
 const postCSSLoaderOptions = {
@@ -16,7 +16,9 @@ const postCSSLoaderOptions = {
 } */
 
 module.exports = {
-	plugins: [new webpack.EnvironmentPlugin(['cool'])],
+	plugins: [new webpack.EnvironmentPlugin(['cool']),
+		// new BundleAnalyzerPlugin()
+	],
 	// plugins: [new BundleAnalyzerPlugin()],
 	watch: true,
 	optimization: {
