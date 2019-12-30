@@ -1,4 +1,4 @@
-import { observable, observe, runInAction } from 'mobx'
+import {computed, observable, observe, runInAction} from 'mobx'
 import {
   RemoteMongoClient,
   UserPasswordCredential
@@ -137,6 +137,18 @@ class Store {
     } else {
       return false
     }
+  }
+
+  @computed
+  get tagsArray() {
+    return Array.from(this.tags)
+
+  }
+
+  @computed
+  get packagesArray() {
+    return Array.from(this.packages)
+
   }
 
   login() {

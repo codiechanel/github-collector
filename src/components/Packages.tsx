@@ -50,7 +50,7 @@ const StyledTypography = styled(Typography)`
 `;
 function Packages(props) {
   let data = useLoader()
-  let list: any = Array.from(store.packages)
+  // let list: any = Array.from(store.packages)
   //   let content = <div>hello</div>
   let content = (
     <CenteredFlex>
@@ -60,7 +60,7 @@ function Packages(props) {
   if (data === 'done') {
     content = (
       <List>
-        {list.map(([key, item]) => {
+        {store.packagesArray.map(([key, item]) => {
           let downloadsLastMonth = null
           if (item.npm) {
 
