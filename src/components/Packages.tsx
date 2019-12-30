@@ -62,7 +62,9 @@ function Packages(props) {
       <List>
         {store.packagesArray.map(([key, item]) => {
           let downloadsLastMonth = null
+          let downloadsLastYear
           if (item.npm) {
+             downloadsLastYear = api.formatNumber(item.npm.downloads[5].count)
 
              downloadsLastMonth = api.formatNumber(item.npm.downloads[2].count)
           }
@@ -96,6 +98,7 @@ function Packages(props) {
               { starsCount && <Chip label="stars" > <Typography style={{color:"magenta"}} use="headline6" >{starsCount}</Typography> </Chip> }
                 { created_at && <Chip label="created_at" > <Typography style={{color:"magenta"}} use="headline6" >{created_at}</Typography></Chip> }
                 { downloadsLastMonth && <Chip icon={"cloud_download"} label="LastMonth" > <Typography style={{color:"magenta"}} use="headline6" >{downloadsLastMonth}</Typography></Chip> }
+                { downloadsLastYear && <Chip icon={"cloud_download"} label="LastYear" > <Typography style={{color:"magenta"}} use="headline6" >{downloadsLastYear}</Typography></Chip> }
 
               </ChipSet>
             </CollapsibleList>
