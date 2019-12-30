@@ -24,12 +24,12 @@ class Api {
 
     }
 
-    async refreshPackage(name, selectedTagId) {
+    async refreshPackage(name, newTags) {
         // let item = this.allPackages.get(pkgName);
 
         let newItem = await this.getPackageInfo(name);
 
-        let oldTags = store.allPackages.get(name).tags;
+       /* let oldTags = store.allPackages.get(name).tags;
         let newTags = oldTags;
 
         if (selectedTagId) {
@@ -37,7 +37,7 @@ class Api {
             oldTags.push(selectedTagId);
             // newTags = [...oldTags, store.selectedTagId.get()];
             newTags = [...new Set(oldTags)];
-        }
+        }*/
 
         // @ts-ignore
         newItem.tags = newTags;

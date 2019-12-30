@@ -25,8 +25,21 @@ class Store {
     this.selectedSort = sortId
   }
 
+  prepareTags(name) {
+    let oldTags = this.allPackages.get(name).tags;
+    let newTags = oldTags;
+
+    if (this.selectedTagId) {
+      // add the cat id
+      oldTags.push(this.selectedTagId);
+      // newTags = [...oldTags, store.selectedTagId.get()];
+      newTags = [...new Set(oldTags)];
+    }
+    return newTags
+  }
+
   async  refreshPackage(name) {
-    let [result, newItem] = await api.refreshPackage(name, this.selectedTagId)
+    let [result, newItem] = await api.refreshPackage(name, this.prepareTags(name))
     /* if there was an insert upsertedId will have a value*/
     // @ts-ignore
     if (result.upsertedId) {
