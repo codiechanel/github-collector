@@ -53,6 +53,13 @@ const StyledTypography = styled(Typography)`
   color: steelblue;
 `;
 
+function computePercentInc(downloadsMonth, downloadsYear) {
+    let aveMonth = downloadsYear / 12
+    let diff = downloadsMonth - aveMonth
+    let percent = (diff / aveMonth) * 100
+    return percent
+}
+
 function Packages(props) {
     let data = useLoader()
     // let list: any = Array.from(store.packages)
@@ -67,11 +74,25 @@ function Packages(props) {
             <List>
                 {store.packagesArray.map(([key, item]) => {
                     let downloadsLastMonth = null
-                    let downloadsLastYear
+                    let downloadsLastYear = null
+                    let aveMonthly = null
+                    let diff = null
+                    let percent = null
                     if (item.npm) {
-                        downloadsLastYear = api.formatNumber(item.npm.downloads[5].count)
+                        let downloadsLastYearNum = item.npm.downloads[5].count
+                        let downloadsLastMonthNum = item.npm.downloads[2].count
+                        let aveMonthlyNum = downloadsLastYearNum / 12
+                        downloadsLastYear = api.formatNumber(downloadsLastYearNum)
 
-                        downloadsLastMonth = api.formatNumber(item.npm.downloads[2].count)
+                        downloadsLastMonth = api.formatNumber(downloadsLastMonthNum)
+                        aveMonthly = api.formatNumber(aveMonthlyNum.toFixed(0))
+
+                        let diffNum = downloadsLastMonthNum - aveMonthlyNum
+                        diff = api.formatNumber(diffNum.toFixed(0))
+
+                        // percent = ((diffNum / aveMonth) * 100).toFixed(0);
+                        percent = computePercentInc(downloadsLastMonthNum, downloadsLastYearNum)
+                        percent = percent.toFixed(0)
                     }
 
                     let starsCount = null
@@ -111,6 +132,15 @@ function Packages(props) {
                                 {downloadsLastYear &&
                                 <Chip icon={"cloud_download"} label="LastYear"> <Typography style={{color: "magenta"}}
                                                                                             use="headline6">{downloadsLastYear}</Typography></Chip>}
+                                {aveMonthly &&
+                                <Chip icon={"cloud_download"} label="aveMonthly"> <Typography style={{color: "magenta"}}
+                                                                                            use="headline6">{aveMonthly}</Typography></Chip>}
+                                {diff &&
+                                <Chip icon={"cloud_download"} label="diff"> <Typography style={{color: (Math.sign(percent) === 1) ? "green": "red"}}
+                                                                                              use="headline6">{diff}</Typography></Chip>}
+                                {percent &&
+                                <Chip icon={"cloud_download"} label="percent"> <Typography style={{color: (Math.sign(percent) === 1) ? "green": "red"}}
+                                                                                        use="headline6">{percent}%</Typography></Chip>}
 
                             </ChipSet>
                         </CollapsibleList>
@@ -128,7 +158,7 @@ function Packages(props) {
         {content}</FullHeight>
 }
 
-const SortPanel = observer (props => {
+const SortPanel = observer(props => {
     console.log('render')
     const options = [
         {
@@ -156,7 +186,8 @@ const SortPanel = observer (props => {
         },
 
     ];
-    return  <div style={{height: 100}}><Select enhanced value={store.selectedSort} onChange={(e) => store.changeSort(e.currentTarget.value)} label="Standard"
-                         options={options}/></div>
+    return <div style={{height: 100}}><Select enhanced value={store.selectedSort}
+                                              onChange={(e) => store.changeSort(e.currentTarget.value)} label="Standard"
+                                              options={options}/></div>
 })
 export default observer(Packages)
