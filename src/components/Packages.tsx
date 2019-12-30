@@ -12,6 +12,8 @@ import {Typography} from '@rmwc/typography'
 import '@rmwc/list/collapsible-list.css';
 import api from "../common/Api";
 import {Select} from '@rmwc/select'
+import { Snackbar, SnackbarAction } from '@rmwc/snackbar';
+import { Swipeable } from 'react-swipeable';
 
 dayjs.extend(relativeTime)
 
@@ -60,7 +62,18 @@ function computePercentInc(downloadsMonth, downloadsYear) {
     return percent
 }
 
+const config = {
+    trackTouch: true, // track touch input
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true
+    // delta: 10,                             // min distance(px) before a swipe starts
+    // preventDefaultTouchmoveEvent: false,   // preventDefault on touchmove, *See Details*
+    //
+    // rotationAngle: 0,                      // set a rotation angle
+};
+
 function Packages(props) {
+    const [open, setOpen] = useState(false);
     let data = useLoader()
     // let list: any = Array.from(store.packages)
     //   let content = <div>hello</div>
@@ -70,7 +83,18 @@ function Packages(props) {
         </CenteredFlex>
     )
     if (data === 'done') {
-        content = (
+        content = (<>
+                <Snackbar
+                    open={open}
+                    onClose={evt => setOpen(false)}
+                    message="item deleted"
+                    action={
+                        <SnackbarAction
+                            label="Dismiss"
+                            onClick={() => console.log('Click Me')}
+                        />
+                    }
+                />
             <List>
                 {store.packagesArray.map(([key, item]) => {
                     let downloadsLastMonth = null
@@ -109,6 +133,13 @@ function Packages(props) {
                     // @ts-ignore
                     // @ts-ignore
                     return (
+                        <Swipeable
+                            key={key}
+                            onSwipedRight={() => {
+                                store.deletePackage(item.name).then(() =>  setOpen(true))
+                                // store.deleteSearchTerm(key).then(x => setOpen(true));
+                            }}
+                            {...config}>
                         <CollapsibleList key={key}
                                          handle={
                                              <SimpleListItem
@@ -144,10 +175,10 @@ function Packages(props) {
 
                             </ChipSet>
                         </CollapsibleList>
-                        // <ListItem key={key}>{item.name}</ListItem>
+                        </Swipeable>
                     )
                 })}
-            </List>
+            </List></>
         )
     }
 

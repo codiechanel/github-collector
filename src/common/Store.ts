@@ -25,6 +25,16 @@ class Store {
     this.selectedSort = sortId
   }
 
+  async deletePackage(name) {
+    await api.deletePackage(name)
+    runInAction(() => {
+      this.packages.delete(name);
+      this.allPackages.delete(name);
+      console.log("delete cool");
+    })
+
+  }
+
   async addPackage(name) {
     let [result , newItem] = await api.addPackage(name, this.selectedTagId)
     /* if there was an insert upsertedId will have a value*/

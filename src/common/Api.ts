@@ -4,12 +4,23 @@ import {RemoteMongoClient, UserPasswordCredential} from 'mongodb-stitch-browser-
 import {app} from './stitch'
 import axios from "axios";
 import * as dayjs from "dayjs";
+import {action} from "mobx";
 
 let GRAPH_ENDPOINT = "https://graph-express.herokuapp.com/graphql";
 
 class Api {
     formatNumber(num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+    async deletePackage(name) {
+        // this.deletePackageAsync(name).then(this.deletePackageSuccess);
+        const db = app
+            .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
+            .db("githubdb");
+        await db.collection("packages")
+            .deleteOne({ name: name })
+
     }
 
     async fetchPackagesByTag(id = null) {
