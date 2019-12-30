@@ -25,6 +25,24 @@ class Store {
     this.selectedSort = sortId
   }
 
+  async  refreshPackage(name) {
+    let [result, newItem] = await api.refreshPackage(name, this.selectedTagId)
+    /* if there was an insert upsertedId will have a value*/
+    // @ts-ignore
+    if (result.upsertedId) {
+      return true;
+    } else {
+      // @ts-ignore
+      // newItem._id = item._id;
+      // set(this.packages, item._id.toString(), newItem);
+
+      this.packages.set(name, newItem);
+      this.allPackages.set(name, newItem);
+      return false;
+    }
+
+  }
+
   async deletePackage(name) {
     await api.deletePackage(name)
     runInAction(() => {

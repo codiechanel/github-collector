@@ -5,6 +5,7 @@ import {app} from './stitch'
 import axios from "axios";
 import * as dayjs from "dayjs";
 import {action} from "mobx";
+import store from "./Store";
 
 let GRAPH_ENDPOINT = "https://graph-express.herokuapp.com/graphql";
 
@@ -20,6 +21,42 @@ class Api {
             .db("githubdb");
         await db.collection("packages")
             .deleteOne({ name: name })
+
+    }
+
+    async refreshPackage(name, selectedTagId) {
+        // let item = this.allPackages.get(pkgName);
+
+        let newItem = await this.getPackageInfo(name);
+
+        let oldTags = store.allPackages.get(name).tags;
+        let newTags = oldTags;
+
+        if (selectedTagId) {
+            // add the cat id
+            oldTags.push(selectedTagId);
+            // newTags = [...oldTags, store.selectedTagId.get()];
+            newTags = [...new Set(oldTags)];
+        }
+
+        // @ts-ignore
+        newItem.tags = newTags;
+
+        const db = app
+            .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
+            .db("githubdb");
+
+        let result = await db
+            .collection("packages")
+
+            .updateOne(
+                { name: name },
+                {
+                    $set: newItem
+                },
+                { upsert: true }
+            );
+        return [result, newItem]
 
     }
 

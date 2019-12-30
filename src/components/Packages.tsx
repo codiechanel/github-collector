@@ -1,6 +1,7 @@
 import store from '../common/Store'
 import * as React from 'react'
 import {observer} from 'mobx-react'
+import {Button} from '@rmwc/button'
 import {List, ListItem, CollapsibleList, SimpleListItem} from '@rmwc/list'
 import {useEffect, useState} from 'react'
 import styled, {createGlobalStyle} from 'styled-components'
@@ -174,6 +175,9 @@ function Packages(props) {
                                                                                         use="headline6">{percent}%</Typography></Chip>}
 
                             </ChipSet>
+                            <Button raised onClick={() => {store.refreshPackage(item.name).then()}}>
+                                refresh
+                            </Button>
                         </CollapsibleList>
                         </Swipeable>
                     )
