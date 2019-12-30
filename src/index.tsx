@@ -158,7 +158,7 @@ function App(props) {
         </TopAppBar>
         <TopAppBarFixedAdjust />
 
-                {/* <CreateTagButton /> */}
+                 <CreateTagButton />
                 <Router>
                     <Tags path="/"/>
                     <Packages path="packages"/>

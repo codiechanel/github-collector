@@ -1,8 +1,9 @@
-import {action, computed, observable} from 'mobx'
+import {action, computed, observable, runInAction} from 'mobx'
 // import api from "../common/api";
 import api from './Api'
 import * as dayjs from 'dayjs'
 import * as relativeTime from 'dayjs/plugin/relativeTime'
+import {app} from "./stitch";
 
 dayjs.extend(relativeTime)
 let GRAPH_ENDPOINT = "https://graph-express.herokuapp.com/graphql";
@@ -25,14 +26,47 @@ class Store {
   }
 
   async addPackage(name) {
-    await api.addPackage(name)
+    let [result , newItem] = await api.addPackage(name, this.selectedTagId)
+    /* if there was an insert upsertedId will have a value*/
+    // @ts-ignore
+    if (result.upsertedId) {
+      // @ts-ignore
+      newItem._id = result.upsertedId;
+      this.packages.set(name, newItem);
+      this.allPackages.set(name, newItem);
+      // set(this.packages, result.upsertedId.toString(), newItem);
+
+      return true;
+    } else {
+      //  this could happen if record exists but with a different tag
+      console.log("package updated, it already exist");
+
+      return false;
+    }
   }
 
   async fetchPackages() {
-    await api.fetchPackagesByTag(this.selectedTagId)
+   let items =  await api.fetchPackagesByTag(this.selectedTagId)
+    runInAction(() => {
+      this.packages.clear()
+      for (let x of items) {
+
+        // @ts-ignore
+        this.packages.set(x.name, x)
+        // @ts-ignore
+        this.allPackages.set(x.name, x)
+      }
+    })
   }
   async saveTag(name) {
-    await  api.saveTag(name)
+  let result =  await  api.saveTag(name)
+    if (result.upsertedId) {
+      this.tags.set(result.upsertedId.toString(), {name: name})
+
+      return true
+    } else {
+      return false
+    }
   }
 
   @computed
@@ -54,12 +88,34 @@ class Store {
 
 
 
-  login() {
-   api.login()
+  async login() {
+    if (app.auth.isLoggedIn) {
+      console.log(`user already  logged in`)
+      // store.fetchSuggestions("react").then();
+      // store.fetchPackagesByTag();
+     await this.fetchTags()
+      // store.fetchDailyTrends("PH").then();
+      // store.fetchHourlyTrends().then();
+    } else {
+      let authedUser  = await api.login()
+
+      console.log(`successfully logged in with id: ${authedUser.id}`)
+      await this.fetchTags()
+
+    }
+
   }
 
   async fetchTags() {
-    await api.fetchTags()
+   let items =  await api.fetchTags()
+    runInAction(() => {
+      this.tags.clear()
+      for (let x of items) {
+        let id = x['_id'].toString()
+
+        this.tags.set(id, x)
+      }
+    })
   }
 }
 
