@@ -13,6 +13,8 @@ class Store {
   @observable
   selectedSort = 'noSort'
   @observable
+  selectedRepo = null
+  @observable
   selectedTagId = null
   packages = observable.map(new Map(), { deep: false })
   allPackages = observable.map(new Map(), { deep: false })
@@ -23,6 +25,19 @@ class Store {
   @action
   changeSort(sortId) {
     this.selectedSort = sortId
+  }
+
+  @action
+  changeRepo(repo) {
+    this.selectedRepo = repo
+  }
+
+  async fetchCommitStats() {
+  let data =   api.fetchCommitStats(this.selectedRepo)
+    return data
+    // console.log(data)
+
+
   }
 
   prepareTags(name) {

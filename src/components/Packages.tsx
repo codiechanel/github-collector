@@ -15,6 +15,7 @@ import api from "../common/Api";
 import {Select} from '@rmwc/select'
 import { Snackbar, SnackbarAction } from '@rmwc/snackbar';
 import { Swipeable } from 'react-swipeable';
+import { navigate } from '@reach/router'
 
 dayjs.extend(relativeTime)
 
@@ -177,6 +178,12 @@ function Packages(props) {
                             </ChipSet>
                             <Button raised onClick={() => {store.refreshPackage(item.name).then()}}>
                                 refresh
+                            </Button>
+                            <Button raised onClick={() => {
+                                console.log(item.resolvedRepoName)
+                                store.changeRepo(item.resolvedRepoName)
+                                navigate('commitStats')}}>
+                                commi stats
                             </Button>
                         </CollapsibleList>
                         </Swipeable>

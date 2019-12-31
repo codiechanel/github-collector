@@ -21,8 +21,20 @@ import store from './common/Store'
 import Packages from './components/Packages'
 import Tags from './components/Tags'
 import SearchPage from "./components/SearchPage";
+import CommitStats from "./components/CommitStats";
 
 const GlobalStyle = createGlobalStyle`
+.tick line {
+  stroke: #C0C0BB;
+  stroke-width: .25;
+}
+.axisLeft text{
+  fill: white;
+}  
+
+.axisBottom  text{
+  fill: white;
+}  
 html {
 
 /*
@@ -163,6 +175,7 @@ function App(props) {
                     <Tags path="/"/>
                     <Packages path="packages"/>
                     <SearchPage path="searchPage"/>
+                    <CommitStats path="commitStats"/>
                 </Router>
             </Panel>
         </ThemeProvider>

@@ -20,7 +20,7 @@ class Api {
             .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
             .db("githubdb");
         await db.collection("packages")
-            .deleteOne({ name: name })
+            .deleteOne({name: name})
 
     }
 
@@ -29,15 +29,15 @@ class Api {
 
         let newItem = await this.getPackageInfo(name);
 
-       /* let oldTags = store.allPackages.get(name).tags;
-        let newTags = oldTags;
+        /* let oldTags = store.allPackages.get(name).tags;
+         let newTags = oldTags;
 
-        if (selectedTagId) {
-            // add the cat id
-            oldTags.push(selectedTagId);
-            // newTags = [...oldTags, store.selectedTagId.get()];
-            newTags = [...new Set(oldTags)];
-        }*/
+         if (selectedTagId) {
+             // add the cat id
+             oldTags.push(selectedTagId);
+             // newTags = [...oldTags, store.selectedTagId.get()];
+             newTags = [...new Set(oldTags)];
+         }*/
 
         // @ts-ignore
         newItem.tags = newTags;
@@ -50,11 +50,11 @@ class Api {
             .collection("packages")
 
             .updateOne(
-                { name: name },
+                {name: name},
                 {
                     $set: newItem
                 },
-                { upsert: true }
+                {upsert: true}
             );
         return [result, newItem]
 
@@ -76,6 +76,11 @@ class Api {
             // .sort({ name: 1 })
             .toArray()
         return items
+    }
+
+    async fetchCommitStats(repo) {
+        let {data} = await axios.get(`https://api.github.com/repos/${repo}/stats/participation`,);
+        return data
     }
 
     async getPackageInfo(name) {
