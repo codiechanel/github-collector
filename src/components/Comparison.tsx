@@ -12,15 +12,26 @@ import {
 import '@rmwc/data-table/data-table.css';
 import store from "../common/Store";
 import {List} from "@rmwc/list";
+import SortPanel from "./SortPanel";
 
 function Comparison(props) {
+    let labels  = ['Package', 'downloadsLastMonth',
+        'downloadsLastYear',
+        'aveMonthly',
+        'diff',
+        'percent',
+        'starsCount',
+        'created_at']
     return <div>
+        <SortPanel/>
         <DataTable>
             <DataTableContent>
                 <DataTableHead>
                     <DataTableRow>
-                        <DataTableHeadCell>Item</DataTableHeadCell>
-                        <DataTableHeadCell>Stars</DataTableHeadCell>
+                        {labels.map(x =>   <DataTableHeadCell>{x}</DataTableHeadCell>)}
+                        {/*<DataTableHeadCell>Item</DataTableHeadCell>*/}
+                        {/*<DataTableHeadCell>Stars</DataTableHeadCell>*/}
+                        {/*<DataTableHeadCell>created_at</DataTableHeadCell>*/}
                     </DataTableRow>
                 </DataTableHead>
                 <DataTableBody>
@@ -36,9 +47,16 @@ function Comparison(props) {
                             created_at
                         } = store.packageInfo(item)
 
+                        let pkgInfo = store.packageInfo(item)
+
+                        Object.keys(pkgInfo).forEach(x => console.log(x))
+
                         return (<DataTableRow>
                             <DataTableCell>{item.name}</DataTableCell>
-                            <DataTableCell>{starsCount}</DataTableCell>
+                            {  Object.keys(pkgInfo).map(x =>  <DataTableCell>{pkgInfo[x]}</DataTableCell>) }
+                            {/*<DataTableCell>{item.name}</DataTableCell>*/}
+                            {/*<DataTableCell>{starsCount}</DataTableCell>*/}
+                            {/*<DataTableCell>{created_at}</DataTableCell>*/}
                         </DataTableRow>)
                     })}
 

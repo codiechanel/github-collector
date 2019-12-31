@@ -1,21 +1,20 @@
 import store from '../common/Store'
 import * as React from 'react'
+import {useEffect, useState} from 'react'
 import {observer} from 'mobx-react'
 import {Button} from '@rmwc/button'
-import {List, ListItem, CollapsibleList, SimpleListItem} from '@rmwc/list'
-import {useEffect, useState} from 'react'
-import styled, {createGlobalStyle} from 'styled-components'
+import {CollapsibleList, List, SimpleListItem} from '@rmwc/list'
+import styled from 'styled-components'
 import {CircularProgress} from '@rmwc/circular-progress'
 import * as dayjs from 'dayjs'
 import * as relativeTime from 'dayjs/plugin/relativeTime'
 import {Chip, ChipSet} from '@rmwc/chip'
 import {Typography} from '@rmwc/typography'
 import '@rmwc/list/collapsible-list.css';
-import api from "../common/Api";
-import {Select} from '@rmwc/select'
-import { Snackbar, SnackbarAction } from '@rmwc/snackbar';
-import { Swipeable } from 'react-swipeable';
-import { navigate } from '@reach/router'
+import {Snackbar, SnackbarAction} from '@rmwc/snackbar';
+import {Swipeable} from 'react-swipeable';
+import {navigate} from '@reach/router'
+import SortPanel from './SortPanel'
 
 dayjs.extend(relativeTime)
 
@@ -53,16 +52,7 @@ export const Box = styled.div`
   max-height: 100px;
   width: 100px;
 `
-const StyledTypography = styled(Typography)`
-  color: steelblue;
-`;
 
-function computePercentInc(downloadsMonth, downloadsYear) {
-    let aveMonth = downloadsYear / 12
-    let diff = downloadsMonth - aveMonth
-    let percent = (diff / aveMonth) * 100
-    return percent
-}
 
 const config = {
     trackTouch: true, // track touch input
@@ -175,35 +165,5 @@ function Packages(props) {
         {content}</FullHeight>
 }
 
-const SortPanel = observer(props => {
-    const options = [
-        {
-            label: 'noSort',
-            value: 'noSort'
-        },
-        {
-            label: 'sortByYear',
-            value: 'sortByYear',
 
-        },
-        {
-            label: 'monthlyDownloads',
-            value: 'monthlyDownloads'
-        },
-        ,
-        {
-            label: 'percent',
-            value: 'percent'
-        },
-        ,
-        {
-            label: 'yearlyDownloads',
-            value: 'yearlyDownloads'
-        },
-
-    ];
-    return <div style={{height: 100}}><Select enhanced value={store.selectedSort}
-                                              onChange={(e) => store.changeSort(e.currentTarget.value)} label="Standard"
-                                              options={options}/></div>
-})
 export default observer(Packages)
