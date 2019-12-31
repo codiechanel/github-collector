@@ -24,6 +24,12 @@ import SearchPage from "./components/SearchPage";
 import CommitStats from "./components/CommitStats";
 
 const GlobalStyle = createGlobalStyle`
+.line-path {
+  fill: none;
+  stroke: maroon;
+  stroke-width: 5;
+  stroke-linejoin: round;
+}
 .tick line {
   stroke: #C0C0BB;
   stroke-width: .25;
@@ -80,12 +86,10 @@ function CreateTagButton(props) {
                 // body="You can pass the body prop or children."
                 open={open}
                 onClose={evt => {
-                    console.log(inputEl.current.value)
                     if (evt.detail.action === 'accept') {
                         store.saveTag(inputEl.current.value)
                     }
 
-                    console.log(evt.detail.action)
                     setOpen(false)
                 }}
             >

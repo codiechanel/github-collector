@@ -25,10 +25,8 @@ const SuggestionResults = observer(props => {
             let url = `https://api.npms.io/v2/search/suggestions?q=${keyword}`;
 
             const {data} = await axios.get(url)
-            console.log('data', data);
             const result = []
             for (const x of data) {
-                console.log(x)
                 result.push(x)
             }
 

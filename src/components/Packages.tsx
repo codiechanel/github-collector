@@ -180,7 +180,6 @@ function Packages(props) {
                                 refresh
                             </Button>
                             <Button raised onClick={() => {
-                                console.log(item.resolvedRepoName)
                                 store.changeRepo(item.resolvedRepoName)
                                 navigate('commitStats')}}>
                                 commi stats
@@ -201,7 +200,6 @@ function Packages(props) {
 }
 
 const SortPanel = observer(props => {
-    console.log('render')
     const options = [
         {
             label: 'noSort',

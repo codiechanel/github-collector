@@ -35,7 +35,6 @@ class Store {
   async fetchCommitStats() {
   let data =   api.fetchCommitStats(this.selectedRepo)
     return data
-    // console.log(data)
 
 
   }
@@ -76,7 +75,6 @@ class Store {
     runInAction(() => {
       this.packages.delete(name);
       this.allPackages.delete(name);
-      console.log("delete cool");
     })
 
   }
