@@ -22,6 +22,7 @@ import Packages from './components/Packages'
 import Tags from './components/Tags'
 import SearchPage from "./components/SearchPage";
 import CommitStats from "./components/CommitStats";
+import Comparison from "./components/Comparison";
 
 const GlobalStyle = createGlobalStyle`
 .line-path {
@@ -42,6 +43,9 @@ const GlobalStyle = createGlobalStyle`
   fill: white;
 }  
 html {
+font-family:"Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",  "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
 
 /*
   display: flex;
@@ -55,6 +59,11 @@ html {
 	flex: 1;
 	flex-direction: column;*/
   //background-color: pink;
+}
+
+:root {
+    --mdc-theme-primary-on-background: white;
+  --mdc-theme-secondary-on-background: white;
 }
  		body {
      /* margin: 0px;
@@ -180,6 +189,7 @@ function App(props) {
                     <Packages path="packages"/>
                     <SearchPage path="searchPage"/>
                     <CommitStats path="commitStats"/>
+                    <Comparison path="comparison"/>
                 </Router>
             </Panel>
         </ThemeProvider>

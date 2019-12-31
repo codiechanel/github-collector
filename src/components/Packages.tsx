@@ -97,43 +97,19 @@ function Packages(props) {
                         />
                     }
                 />
+                <Button onClick={() => navigate('comparison')}>compare</Button>
             <List>
                 {store.packagesArray.map(([key, item]) => {
-                    let downloadsLastMonth = null
-                    let downloadsLastYear = null
-                    let aveMonthly = null
-                    let diff = null
-                    let percent = null
-                    if (item.npm) {
-                        let downloadsLastYearNum = item.npm.downloads[5].count
-                        let downloadsLastMonthNum = item.npm.downloads[2].count
-                        let aveMonthlyNum = downloadsLastYearNum / 12
-                        downloadsLastYear = api.formatNumber(downloadsLastYearNum)
+                    let {
+                        downloadsLastMonth,
+                        downloadsLastYear,
+                        aveMonthly,
+                        diff,
+                        percent,
+                        starsCount,
+                        created_at
+                    } = store.packageInfo(item)
 
-                        downloadsLastMonth = api.formatNumber(downloadsLastMonthNum)
-                        aveMonthly = api.formatNumber(aveMonthlyNum.toFixed(0))
-
-                        let diffNum = downloadsLastMonthNum - aveMonthlyNum
-                        diff = api.formatNumber(diffNum.toFixed(0))
-
-                        // percent = ((diffNum / aveMonth) * 100).toFixed(0);
-                        percent = computePercentInc(downloadsLastMonthNum, downloadsLastYearNum)
-                        percent = percent.toFixed(0)
-                    }
-
-                    let starsCount = null
-                    if (item.github) {
-                        starsCount = api.formatNumber(item.github.starsCount)
-                    }
-                    let created_at = null
-                    if (item.githubExtra) {
-                        created_at = item.githubExtra.created_at
-                        created_at = dayjs(created_at)
-                        // @ts-ignore
-                        created_at = dayjs().from(created_at, true) + ' ago'
-                    }
-                    // @ts-ignore
-                    // @ts-ignore
                     return (
                         <Swipeable
                             key={key}

@@ -39,6 +39,10 @@ class Store {
 
   }
 
+  packageInfo(item) {
+   return api.packageInfo(item)
+  }
+
   prepareTags(name) {
     let oldTags = this.allPackages.get(name).tags;
     let newTags = oldTags;

@@ -83,6 +83,61 @@ class Api {
         return data
     }
 
+    // computePercentInc(downloadsMonth, downloadsYear) {
+    //     let aveMonth = downloadsYear / 12
+    //     let diff = downloadsMonth - aveMonth
+    //     let percent = (diff / aveMonth) * 100
+    //     return percent
+    // }
+
+    packageInfo(item) {
+        let downloadsLastMonth = null
+        let downloadsLastYear = null
+        let aveMonthly = null
+        let diff = null
+        let percent = null
+        let starsCount = null
+        let created_at = null
+        if (item.npm) {
+            let downloadsLastYearNum = item.npm.downloads[5].count
+            let downloadsLastMonthNum = item.npm.downloads[2].count
+            let aveMonthlyNum = downloadsLastYearNum / 12
+            downloadsLastYear = this.formatNumber(downloadsLastYearNum)
+
+            downloadsLastMonth = this.formatNumber(downloadsLastMonthNum)
+            aveMonthly = this.formatNumber(aveMonthlyNum.toFixed(0))
+
+            let diffNum = downloadsLastMonthNum - aveMonthlyNum
+            diff = this.formatNumber(diffNum.toFixed(0))
+
+            // percent = ((diffNum / aveMonth) * 100).toFixed(0);
+            percent = this.computePercentInc(downloadsLastMonthNum, downloadsLastYearNum)
+            percent = percent.toFixed(0)
+        }
+
+
+        if (item.github) {
+            starsCount = api.formatNumber(item.github.starsCount)
+        }
+
+        if (item.githubExtra) {
+            created_at = item.githubExtra.created_at
+            created_at = dayjs(created_at)
+            // @ts-ignore
+            created_at = dayjs().from(created_at, true) + ' ago'
+        }
+
+        return {
+            downloadsLastMonth,
+            downloadsLastYear,
+            aveMonthly,
+            diff,
+            percent,
+            starsCount,
+            created_at
+        }
+    }
+
     async getPackageInfo(name) {
         // let downloads = await this.fetchDownloadCount(name);
         // let pkg = await this.fetchPackage(name);
