@@ -78,6 +78,12 @@ class Api {
         return items
     }
 
+    async fetchContributors(repo) {
+
+            let {data} = await axios.get(`https://api.github.com/repos/${repo}/contributors?q=contributions&order=desc`,);
+        return data
+    }
+
     async fetchCommitStats(repo) {
         let {data} = await axios.get(`https://api.github.com/repos/${repo}/stats/participation`,);
         return data

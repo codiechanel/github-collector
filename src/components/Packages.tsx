@@ -150,6 +150,9 @@ function Packages(props) {
                                 navigate('commitStats')}}>
                                 commi stats
                             </Button>
+                            <Button raised onClick={() => {
+                                store.changeRepo(item.resolvedRepoName)
+                                navigate('contributors')}} >Contributors</Button>
                         </CollapsibleList>
                         </Swipeable>
                     )

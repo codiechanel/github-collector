@@ -17,6 +17,7 @@ class Store {
   @observable
   selectedTagId = null
   packages = observable.map(new Map(), { deep: false })
+  contributors = observable.map(new Map(), { deep: false })
   allPackages = observable.map(new Map(), { deep: false })
   // categories = observable.map(new Map(), { deep: false });
   tags = observable.map(new Map(), { deep: false })
@@ -116,6 +117,12 @@ class Store {
       }
     })
   }
+  async fetchContributors() {
+    let data = await api.fetchContributors(this.selectedRepo)
+    console.log(data)
+    return data
+
+  }
   async saveTag(name) {
   let result =  await  api.saveTag(name)
     if (result.upsertedId) {
@@ -130,6 +137,12 @@ class Store {
   @computed
   get tagsArray() {
     return Array.from(this.tags)
+
+  }
+
+  @computed
+  get contributorsArray() {
+    return Array.from(this.contributors)
 
   }
 
@@ -163,6 +176,8 @@ class Store {
     }
 
   }
+
+
 
   async fetchTags() {
    let items =  await api.fetchTags()

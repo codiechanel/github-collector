@@ -23,6 +23,7 @@ import Tags from './components/Tags'
 import SearchPage from "./components/SearchPage";
 import CommitStats from "./components/CommitStats";
 import Comparison from "./components/Comparison";
+import Contributors from "./components/Contributors";
 
 const GlobalStyle = createGlobalStyle`
 .line-path {
@@ -142,7 +143,7 @@ export const Panel2 = styled.div<PanelProp>`
 `
 
 function App(props) {
-    console.log('new', process.env.cool)
+    console.log('ye', process.env.cool)
     store.login()
     return (
         <ThemeProvider
@@ -190,6 +191,7 @@ function App(props) {
                     <SearchPage path="searchPage"/>
                     <CommitStats path="commitStats"/>
                     <Comparison path="comparison"/>
+                    <Contributors path="contributors"/>
                 </Router>
             </Panel>
         </ThemeProvider>

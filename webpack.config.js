@@ -33,9 +33,10 @@ module.exports = {
 	// devtool: 'eval',
 	// devtool: 'inline-source-map',
 	// Use a eval-source-map variant for incremental builds.
+	// n most cases, cheap-module-eval-source-map is the best option.
 	devtool: 'eval-source-map',
 	cache: true,
-	// mode: 'development',
+	mode: 'development',
 	entry: './src/index.tsx',
 	output: {
 		path: path.resolve(__dirname, 'public'),
@@ -57,7 +58,13 @@ module.exports = {
 		rules: [
 			{
 				test: /\.tsx?$/,
-				loader: 'ts-loader'
+				loader: 'ts-loader',
+				//this is for dev use only
+				// it does speed things up
+				options: {
+					transpileOnly: true,
+					experimentalWatchApi: true,
+				},
 			},
 			{
 				test: /\.css$/i,
