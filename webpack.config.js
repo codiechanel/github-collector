@@ -74,7 +74,7 @@ module.exports = {
 	},
 	devServer: {
 		watchContentBase: true,
-		// historyApiFallback: true,
+		historyApiFallback: true,
 		contentBase: path.join(__dirname, 'public'),
 		compress: true,
 		port: 9000

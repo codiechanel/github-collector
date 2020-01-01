@@ -15,6 +15,8 @@ class Store {
   @observable
   selectedRepo = null
   @observable
+  platform = "NPM"
+  @observable
   selectedTagId = null
   packages = observable.map(new Map(), { deep: false })
   contributors = observable.map(new Map(), { deep: false })

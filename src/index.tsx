@@ -24,6 +24,7 @@ import SearchPage from "./components/SearchPage";
 import CommitStats from "./components/CommitStats";
 import Comparison from "./components/Comparison";
 import Contributors from "./components/Contributors";
+import api from "./common/Api";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -157,7 +158,8 @@ export const Panel2 = styled.div<PanelProp>`
 `
 
 function App(props) {
-    console.log('nice', process.env.cool)
+    api.fetchDemo()
+    console.log('kl', process.env.cool)
     store.login()
     return (
         <ThemeProvider

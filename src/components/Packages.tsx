@@ -112,6 +112,7 @@ function Packages(props) {
                                          handle={
                                              <SimpleListItem
                                                  text={item.name}
+                                                 secondaryText={item.description}
                                                  graphic="favorite"
                                                  metaIcon="chevron_right"
                                              />

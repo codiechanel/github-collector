@@ -144,6 +144,10 @@ class Api {
         }
     }
 
+    fetchDemo() {
+        axios.get('https://libraries.io/api/search?q=flutter&api_key=f0e12ad80d97d700fb1c9926fae2f77b&platforms=Pub').then(x => console.log(x))
+    }
+
     async getPackageInfo(name) {
         // let downloads = await this.fetchDownloadCount(name);
         // let pkg = await this.fetchPackage(name);

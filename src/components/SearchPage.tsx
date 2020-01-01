@@ -22,9 +22,12 @@ const SuggestionResults = observer(props => {
         const fetchData = async (keyword = '') => {
             if (keyword.trim() == '' || keyword.length < 3) return [];
 
-            let url = `https://api.npms.io/v2/search/suggestions?q=${keyword}`;
+            // let url = `https://api.npms.io/v2/search/suggestions?q=${keyword}`;
+            let url = `   https://libraries.io/api/search?q=${keyword}&api_key=f0e12ad80d97d700fb1c9926fae2f77b&platforms=${store.platform}`;
+
 
             const {data} = await axios.get(url)
+            console.log(data)
             const result = []
             for (const x of data) {
                 result.push(x)
@@ -40,9 +43,12 @@ const SuggestionResults = observer(props => {
     return (
         <List twoLine>
             {options.map(option => {
-                let name = option.package.name
-                let description = option.package.description
-                let score =  option.score.final.toFixed(2);
+                // let name = option.package.name
+                // let description = option.package.description
+                let name = option.name
+                let description = option.description
+                // let score =  option.score.final.toFixed(2);
+                let score = option.rank
                 return (
                 <SimpleListItem
                     key={name}
