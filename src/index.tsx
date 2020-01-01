@@ -26,6 +26,20 @@ import Comparison from "./components/Comparison";
 import Contributors from "./components/Contributors";
 
 const GlobalStyle = createGlobalStyle`
+
+.mdc-select:not(.mdc-select--disabled) .mdc-select__selected-text {
+
+color: white;
+}
+
+.mdc-select:not(.mdc-select--disabled) .mdc-floating-label {
+color: white;
+}
+
+.mdc-select:not(.mdc-select--disabled).mdc-select--focused .mdc-floating-label {
+color: white;
+}
+
 .line-path {
   fill: none;
   stroke: maroon;
@@ -143,7 +157,7 @@ export const Panel2 = styled.div<PanelProp>`
 `
 
 function App(props) {
-    console.log('ye', process.env.cool)
+    console.log('nice', process.env.cool)
     store.login()
     return (
         <ThemeProvider

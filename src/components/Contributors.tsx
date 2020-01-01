@@ -28,6 +28,7 @@ function Contributors(props) {
     return <div>
         <List>
             {data.map((item) => {
+                // html_url
                 let avatar = <Avatar
                     src={item.avatar_url}
                     // size="xsmall"
@@ -38,6 +39,7 @@ function Contributors(props) {
                                        secondaryText={item.contributions}
                                        graphic={avatar}
                                        metaIcon="chevron_right"
+                                       onClick={() => window.open(item.html_url, '_blank') }
                 />
             })}
         </List>
