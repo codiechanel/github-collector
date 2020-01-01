@@ -2,20 +2,20 @@ import * as React from 'react'
 import {observer} from 'mobx-react'
 import {
     DataTable,
+    DataTableBody,
+    DataTableCell,
     DataTableContent,
     DataTableHead,
-    DataTableRow,
     DataTableHeadCell,
-    DataTableBody,
-    DataTableCell
+    DataTableRow
 } from '@rmwc/data-table'
 import '@rmwc/data-table/data-table.css';
 import store from "../common/Store";
-import {List} from "@rmwc/list";
 import SortPanel from "./SortPanel";
+import {Typography} from "@rmwc/typography";
 
 function Comparison(props) {
-    let labels  = ['Package', 'downloadsLastMonth',
+    let labels = ['Package', 'downloadsLastMonth',
         'downloadsLastYear',
         'aveMonthly',
         'diff',
@@ -28,35 +28,25 @@ function Comparison(props) {
             <DataTableContent>
                 <DataTableHead>
                     <DataTableRow>
-                        {labels.map(x =>   <DataTableHeadCell>{x}</DataTableHeadCell>)}
-                        {/*<DataTableHeadCell>Item</DataTableHeadCell>*/}
-                        {/*<DataTableHeadCell>Stars</DataTableHeadCell>*/}
-                        {/*<DataTableHeadCell>created_at</DataTableHeadCell>*/}
+                        {labels.map(x => <DataTableHeadCell><Typography  use="headline6">{x}</Typography> </DataTableHeadCell>)}
+
                     </DataTableRow>
                 </DataTableHead>
                 <DataTableBody>
 
                     {store.packagesArray.map(([key, item]) => {
-                        let {
-                            downloadsLastMonth,
-                            downloadsLastYear,
-                            aveMonthly,
-                            diff,
-                            percent,
-                            starsCount,
-                            created_at
-                        } = store.packageInfo(item)
+
 
                         let pkgInfo = store.packageInfo(item)
 
                         Object.keys(pkgInfo).forEach(x => console.log(x))
 
                         return (<DataTableRow>
-                            <DataTableCell>{item.name}</DataTableCell>
-                            {  Object.keys(pkgInfo).map(x =>  <DataTableCell>{pkgInfo[x]}</DataTableCell>) }
-                            {/*<DataTableCell>{item.name}</DataTableCell>*/}
-                            {/*<DataTableCell>{starsCount}</DataTableCell>*/}
-                            {/*<DataTableCell>{created_at}</DataTableCell>*/}
+                            <DataTableCell><Typography  use="headline6">{item.name}</Typography></DataTableCell>
+                            {/*<Typography style={{color: (Math.sign(percent) === 1) ? "green": "red"}}*/}
+                            {/*            use="headline6">{diff}</Typography>*/}
+                            {Object.keys(pkgInfo).map(x => <DataTableCell><Typography  use="subtitle1">{pkgInfo[x]}</Typography></DataTableCell>)}
+
                         </DataTableRow>)
                     })}
 
@@ -64,7 +54,7 @@ function Comparison(props) {
                 </DataTableBody>
             </DataTableContent>
         </DataTable>
-        hllo</div>
+        </div>
 }
 
 export default observer(Comparison)

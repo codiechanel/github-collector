@@ -148,7 +148,7 @@ class Store {
 
   async login() {
     if (app.auth.isLoggedIn) {
-      console.log(`user already  logged in`)
+      console.log(`user already cool  logged in`)
       // store.fetchSuggestions("react").then();
       // store.fetchPackagesByTag();
      await this.fetchTags()

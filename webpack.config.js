@@ -20,18 +20,19 @@ module.exports = {
 		// new BundleAnalyzerPlugin()
 	],
 	// plugins: [new BundleAnalyzerPlugin()],
-	watch: true,
+	// watch: true,
 	optimization: {
 		splitChunks: {
 			chunks: 'initial'
 		}
 	},
-	// devtool: 'cheap-eval-source-map',
-	mode: 'production',
+	devtool: 'eval',
+	mode: 'development',
 	entry: './src/index.tsx',
 	output: {
 		path: path.resolve(__dirname, 'public'),
-		filename: 'bundle.js'
+		filename: '[name].bundle.js',
+		// filename: 'bundle.js'
 		// publicPath: "/public/"
 	},
 	resolve: {
@@ -58,7 +59,10 @@ module.exports = {
 	},
 	devServer: {
 		watchContentBase: true,
-		historyApiFallback: true
+		// historyApiFallback: true,
+		contentBase: path.join(__dirname, 'public'),
+		compress: true,
+		port: 9000
 	}
 	/* externals: {
     // react: 'React',
