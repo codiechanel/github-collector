@@ -1,5 +1,6 @@
 const path = require('path');
 var webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 /* const autoprefixer = require('autoprefixer')
@@ -16,7 +17,10 @@ const postCSSLoaderOptions = {
 } */
 
 module.exports = {
-	plugins: [new webpack.EnvironmentPlugin(['cool']),
+	plugins: [
+		new Dotenv(),
+		// new webpack.EnvironmentPlugin(['cool'])
+
 		// new BundleAnalyzerPlugin()
 	],
 	// plugins: [new BundleAnalyzerPlugin()],
@@ -27,7 +31,9 @@ module.exports = {
 		}
 	},
 	// devtool: 'eval',
-	devtool: 'inline-source-map',
+	// devtool: 'inline-source-map',
+	// Use a eval-source-map variant for incremental builds.
+	devtool: 'eval-source-map',
 	cache: true,
 	mode: 'development',
 	entry: './src/index.tsx',
