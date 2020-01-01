@@ -218,8 +218,8 @@ class Api {
     async login() {
 
         const credential = new UserPasswordCredential(
-            'wsguy10a@gmail.com',
-            'temp123'
+            process.env.USER,
+            process.env.PASS
         )
         let authedUser = await app.auth
             .loginWithCredential(credential)
