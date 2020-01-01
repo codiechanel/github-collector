@@ -142,7 +142,7 @@ export const Panel2 = styled.div<PanelProp>`
 `
 
 function App(props) {
-    console.log('wow', process.env.cool)
+    console.log('new', process.env.cool)
     store.login()
     return (
         <ThemeProvider

@@ -35,7 +35,7 @@ module.exports = {
 	// Use a eval-source-map variant for incremental builds.
 	devtool: 'eval-source-map',
 	cache: true,
-	mode: 'development',
+	// mode: 'development',
 	entry: './src/index.tsx',
 	output: {
 		path: path.resolve(__dirname, 'public'),
