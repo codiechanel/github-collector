@@ -41,7 +41,7 @@
 		"dev": "yarn build-watch & yarn live-server",
 		"live-server": "live-server  -watch=/:public/bundle.js  --mount=/:public --ignore=node_modules,src",
 		"dev99": "concurrently  \"yarn build-watch\" \"yarn live-server\"",
-		"dev-server": "webpack-dev-server --content-base public/"
+		"dev-server": "webpack-dev-server --open --content-base public/"
 	},
 	"browserslist": {
 		"production": [

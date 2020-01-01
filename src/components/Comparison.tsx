@@ -28,7 +28,7 @@ function Comparison(props) {
             <DataTableContent>
                 <DataTableHead>
                     <DataTableRow>
-                        {labels.map(x => <DataTableHeadCell><Typography  use="headline6">{x}</Typography> </DataTableHeadCell>)}
+                        {labels.map(x => <DataTableHeadCell key={x}><Typography  use="headline6">{x}</Typography> </DataTableHeadCell>)}
 
                     </DataTableRow>
                 </DataTableHead>
@@ -41,11 +41,11 @@ function Comparison(props) {
 
                         Object.keys(pkgInfo).forEach(x => console.log(x))
 
-                        return (<DataTableRow>
+                        return (<DataTableRow key={key}>
                             <DataTableCell><Typography  use="headline6">{item.name}</Typography></DataTableCell>
                             {/*<Typography style={{color: (Math.sign(percent) === 1) ? "green": "red"}}*/}
                             {/*            use="headline6">{diff}</Typography>*/}
-                            {Object.keys(pkgInfo).map(x => <DataTableCell><Typography  use="subtitle1">{pkgInfo[x]}</Typography></DataTableCell>)}
+                            {Object.keys(pkgInfo).map(x => <DataTableCell key={x}><Typography  use="subtitle1">{pkgInfo[x]}</Typography></DataTableCell>)}
 
                         </DataTableRow>)
                     })}

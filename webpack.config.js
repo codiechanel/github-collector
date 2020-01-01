@@ -26,7 +26,9 @@ module.exports = {
 			chunks: 'initial'
 		}
 	},
-	devtool: 'eval',
+	// devtool: 'eval',
+	devtool: 'inline-source-map',
+	cache: true,
 	mode: 'development',
 	entry: './src/index.tsx',
 	output: {
