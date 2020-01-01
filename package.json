@@ -1,6 +1,6 @@
 {
 	"name": "react-container-template",
-	"version": "0.1.0",
+	"version": "0.1.01",
 	"dependencies": {
 		"@reach/router": "^1.2.1",
 		"@rmwc/button": "^5.7.2",
