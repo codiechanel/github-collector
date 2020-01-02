@@ -161,7 +161,7 @@ export const Panel2 = styled.div<PanelProp>`
 
 function App(props) {
     api.fetchDemo()
-    console.log('kl', process.env.cool)
+    // console.log('kl', process.env.cool)
     store.login()
     return (
         <ThemeProvider

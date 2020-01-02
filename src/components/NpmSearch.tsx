@@ -36,7 +36,6 @@ const SuggestionResults = observer(props => {
 
 
             let {data} = await axios.get(url)
-            console.log(data)
             // if (store.platform === 'Github') {
             //     data = data.items
             // }

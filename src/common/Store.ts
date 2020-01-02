@@ -145,7 +145,6 @@ class Store {
   }
   async fetchContributors() {
     let data = await api.fetchContributors(this.selectedPackage.full_name)
-    console.log(data)
     return data
 
   }

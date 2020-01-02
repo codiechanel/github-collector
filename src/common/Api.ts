@@ -20,13 +20,12 @@ class Api {
             .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
             .db("githubdb");
         await db.collection("packages")
-            .deleteOne({name: name})
+            .deleteOne({full_name: name})
 
     }
 
     async updatePackageWithNpm(pkg, npm_name) {
-        let npmResult =  await  axios.get(`https://api.npms.io/v2/package/${npm_name}`);
-     console.log(npmResult)
+        let npmResult = await axios.get(`https://api.npms.io/v2/package/${npm_name}`);
         pkg.npm = npmResult.data.collected.npm
 
         const db = app
@@ -56,7 +55,7 @@ class Api {
         const newItem = {
             owner_id: app.auth.user.id,
             name: data.name,
-            full_name:data.full_name,
+            full_name: data.full_name,
             description: data.description,
             resolvedRepoName: data.full_name,
             github: data
@@ -113,7 +112,7 @@ class Api {
 
     async fetchContributors(repo) {
 
-            let {data} = await axios.get(`https://api.github.com/repos/${repo}/contributors?q=contributions&order=desc`,);
+        let {data} = await axios.get(`https://api.github.com/repos/${repo}/contributors?q=contributions&order=desc`,);
         return data
     }
 
@@ -244,16 +243,47 @@ class Api {
     async addPackage(pkg, selectedTagId) {
 
         let {data} = await axios.get(`https://api.github.com/repos/${pkg.full_name}`,);
-        // let npmResult =  await  axios.get(`https://api.npms.io/v2/package/${pkg.name}`);
-        const newItem = {
+
+
+        const newItem: any = {
             owner_id: app.auth.user.id,
-            full_name:data.full_name,
+            full_name: data.full_name,
             name: data.name,
-            // npm: npmResult.data.collected.npm,
+            stargazers_count: data.stargazers_count,
+            private: data.private,
+
             description: data.description,
             resolvedRepoName: data.full_name,
             github: data
         };
+
+        try {
+            let filename = `https://raw.githubusercontent.com/${pkg.full_name}/master/package.json`
+            // await axios.head(filename)
+            let pkgJson = await axios.get(filename)
+            let pkgJsonData = pkgJson.data
+            if (pkgJsonData.private !== true && pkgJsonData.name) {
+
+                let npmResult = await axios.get(`https://api.npms.io/v2/package/${encodeURIComponent(pkgJsonData.name)}`);
+                newItem.npm = npmResult.data.collected.npm
+
+
+            }
+        } catch (e) {
+            // console.log(e)
+        }
+
+//         if (!data.private) {
+//             console.log('not private', data)
+//             let pkgJson = await axios.get(`https://raw.githubusercontent.com/${pkg.full_name}/master/package.json`)
+//
+//             let pkgJsonData = pkgJson.data
+//             console.log(pkgJsonData.name, pkgJsonData)
+//             let npmResult = await axios.get(`https://api.npms.io/v2/package/${encodeURIComponent(pkgJsonData.name)}`);
+// console.log(npmResult)
+//             // newItem.npm = npmResult.data.collected.npm
+//
+//         }
         // @ts-ignore
         newItem.tags = [selectedTagId];
 

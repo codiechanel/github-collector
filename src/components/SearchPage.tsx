@@ -15,17 +15,49 @@ const SuggestionBox = observer(props => {
         />
     );
 });
+// Hook
+function useDebounce(value, delay) {
+    // State and setters for debounced value
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(
+        () => {
+            // Update debounced value after delay
+            const handler = setTimeout(() => {
+                setDebouncedValue(value);
+            }, delay);
+
+            // Cancel the timeout if value changes (also on delay change or unmount)
+            // This is how we prevent debounced value from updating if value is changed ...
+            // .. within the delay period. Timeout gets cleared and restarted.
+            return () => {
+                clearTimeout(handler);
+            };
+        },
+        [value, delay] // Only re-call effect if value or delay changes
+    );
+
+    return debouncedValue;
+}
 const SuggestionResults = observer(props => {
     const [content, setContent] = useState(null);
     let inputValue = store.keyword;
+    const debouncedSearchTerm = useDebounce(inputValue, 500);
     let platform = store.platform
     useEffect(() => {
         console.log('usefew')
         const fetchData = async (keyword = '') => {
             if (keyword.trim() == '' || keyword.length < 3) return [];
+            let config = {
+                params : {
+                    client_id: process.env.GITHUB_CLIENT_ID,
+                    // @ts-ignore
+                    client_secret:process.env.GITHUB_CLIENT_SECRET
+                }
+            }
             let url
             // if (store.platform === 'Github') {
-                 url = `https://api.github.com/search/repositories?q=${keyword}&sort=stars&order=desc`
+                 url = `https://api.github.com/search/repositories?q=${encodeURIComponent(keyword)}&sort=stars&order=desc`
 
             // }
             // else {
@@ -36,8 +68,7 @@ const SuggestionResults = observer(props => {
             // let url = `   https://libraries.io/api/search?q=${keyword}&api_key=f0e12ad80d97d700fb1c9926fae2f77b&platforms=${store.platform}`;
 
 
-            let {data} = await axios.get(url)
-            console.log(data)
+            let {data} = await axios.get(url, config)
             // if (store.platform === 'Github') {
             //     data = data.items
             // }
@@ -76,8 +107,8 @@ const SuggestionResults = observer(props => {
 
             setContent(newContent);
         };
-        fetchData(inputValue).then();
-    }, [inputValue, platform]);
+        fetchData(debouncedSearchTerm).then();
+    }, [debouncedSearchTerm, platform]);
 
 
     return (
@@ -99,7 +130,7 @@ function processData(option, platform) {
 }
 
 function processGithub(option) {
-    let name = option.name
+    let name = option.full_name
     let description = option.description
 
     let score =  option.score.toFixed(2);
