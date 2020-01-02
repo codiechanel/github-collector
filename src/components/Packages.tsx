@@ -88,7 +88,7 @@ function Packages(props) {
                     }
                 />
                 <Button onClick={() => navigate('comparison')}>compare</Button>
-            <List>
+            <List twoLine>
                 {store.packagesArray.map(([key, item]) => {
                     let {
                         downloadsLastMonth,

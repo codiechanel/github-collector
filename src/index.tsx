@@ -25,6 +25,7 @@ import CommitStats from "./components/CommitStats";
 import Comparison from "./components/Comparison";
 import Contributors from "./components/Contributors";
 import api from "./common/Api";
+import Platforms from "./components/Platform";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -199,7 +200,7 @@ function App(props) {
           </TopAppBarRow>
         </TopAppBar>
         <TopAppBarFixedAdjust />
-
+<Platforms/>
                  <CreateTagButton />
                 <Router>
                     <Tags path="/"/>

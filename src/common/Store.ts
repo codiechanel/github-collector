@@ -26,6 +26,10 @@ class Store {
 
 
   @action
+  changePlatform(platform) {
+    this.platform = platform
+  }
+  @action
   changeSort(sortId) {
     this.selectedSort = sortId
   }

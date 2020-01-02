@@ -26,7 +26,7 @@ function useLoader() {
 function Contributors(props) {
     let data = useLoader()
     return <div>
-        <List>
+        <List twoLine>
             {data.map((item) => {
                 // html_url
                 let avatar = <Avatar
