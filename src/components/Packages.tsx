@@ -104,14 +104,14 @@ function Packages(props) {
                         <Swipeable
                             key={key}
                             onSwipedRight={() => {
-                                store.deletePackage(item.name).then(() =>  setOpen(true))
+                                store.deletePackage(item.full_name).then(() =>  setOpen(true))
                                 // store.deleteSearchTerm(key).then(x => setOpen(true));
                             }}
                             {...config}>
                         <CollapsibleList key={key}
                                          handle={
                                              <SimpleListItem
-                                                 text={item.name}
+                                                 text={item.full_name}
                                                  secondaryText={item.description}
                                                  graphic="favorite"
                                                  metaIcon="chevron_right"
@@ -143,7 +143,7 @@ function Packages(props) {
                                                                                         use="headline6">{percent}%</Typography></Chip>}
 
                             </ChipSet>
-                            <Button raised onClick={() => {store.refreshPackage(item.name).then()}}>
+                            <Button raised onClick={() => {store.refreshPackage(item.resolvedRepoName).then()}}>
                                 refresh
                             </Button>
                             <Button raised onClick={() => {

@@ -24,10 +24,19 @@ class Api {
 
     }
 
-    async refreshPackage(name, newTags) {
+    async refreshPackage(full_name, newTags) {
         // let item = this.allPackages.get(pkgName);
 
-        let newItem = await this.getPackageInfo(name);
+        // let newItem = await this.getPackageInfo(name);
+        let {data} = await axios.get(`https://api.github.com/repos/${full_name}`,);
+        const newItem = {
+            owner_id: app.auth.user.id,
+            name: data.name,
+            full_name:data.full_name,
+            description: data.description,
+            resolvedRepoName: data.full_name,
+            github: data
+        };
 
         /* let oldTags = store.allPackages.get(name).tags;
          let newTags = oldTags;
@@ -50,7 +59,7 @@ class Api {
             .collection("packages")
 
             .updateOne(
-                {name: name},
+                {full_name: full_name},
                 {
                     $set: newItem
                 },
@@ -123,15 +132,20 @@ class Api {
 
 
         if (item.github) {
-            starsCount = api.formatNumber(item.github.starsCount)
-        }
-
-        if (item.githubExtra) {
-            created_at = item.githubExtra.created_at
+            starsCount = api.formatNumber(item.github.stargazers_count)
+            created_at = item.github.created_at
             created_at = dayjs(created_at)
             // @ts-ignore
             created_at = dayjs().from(created_at, true) + ' ago'
+
         }
+
+        // if (item.githubExtra) {
+        //     created_at = item.githubExtra.created_at
+        //     created_at = dayjs(created_at)
+        //     // @ts-ignore
+        //     created_at = dayjs().from(created_at, true) + ' ago'
+        // }
 
         return {
             downloadsLastMonth,
@@ -202,7 +216,40 @@ class Api {
         return newItem;
     }
 
-    async addPackage(name, selectedTagId) {
+    async addPackage(full_name, selectedTagId) {
+
+        let {data} = await axios.get(`https://api.github.com/repos/${full_name}`,);
+        const newItem = {
+            owner_id: app.auth.user.id,
+            full_name:data.full_name,
+            name: data.name,
+            description: data.description,
+            resolvedRepoName: data.full_name,
+            github: data
+        };
+        // @ts-ignore
+        newItem.tags = [selectedTagId];
+
+        const db = app
+            .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
+            .db("githubdb");
+
+        let result = await db
+            .collection("packages")
+
+            .updateOne(
+                {full_name: full_name},
+                {
+                    $set: newItem
+                },
+                {upsert: true}
+            );
+        return [result, newItem]
+    }
+
+    // TODO: this one uses name not full name
+    // ideally we should use github full name to make it really unique
+    async addPackageOld(name, selectedTagId) {
         let newItem = await this.getPackageInfo(name);
 
         // @ts-ignore

@@ -24,13 +24,13 @@ const SuggestionResults = observer(props => {
         const fetchData = async (keyword = '') => {
             if (keyword.trim() == '' || keyword.length < 3) return [];
             let url
-            if (store.platform === 'Github') {
+            // if (store.platform === 'Github') {
                  url = `https://api.github.com/search/repositories?q=${keyword}&sort=stars&order=desc`
 
-            }
-            else {
-                 url = `https://api.npms.io/v2/search/suggestions?q=${keyword}`;
-            }
+            // }
+            // else {
+            //      url = `https://api.npms.io/v2/search/suggestions?q=${keyword}`;
+            // }
 
 
             // let url = `   https://libraries.io/api/search?q=${keyword}&api_key=f0e12ad80d97d700fb1c9926fae2f77b&platforms=${store.platform}`;
@@ -38,16 +38,17 @@ const SuggestionResults = observer(props => {
 
             let {data} = await axios.get(url)
             console.log(data)
-            if (store.platform === 'Github') {
-                data = data.items
-            }
+            // if (store.platform === 'Github') {
+            //     data = data.items
+            // }
+            data = data.items
             const result = []
             for (const x of data) {
                 result.push(x)
             }
 
             let newContent = result.map((option, i) => {
-                let { name, description, score } = processData(option, platform)
+                let { name, description, score } =processGithub(option)
 
                 return (
                     <SimpleListItem
@@ -61,13 +62,9 @@ const SuggestionResults = observer(props => {
                                 console.log("already exist");
                                 // store.refreshPackage(option).then(res => {});
                             } else {
-                                console.log("addPackage");
-                                if (store.platform === 'Pub') {
-                                    console.log(option)
-                                }
-                                else {
-                                    store.addPackage(name).then(res => {});
-                                }
+
+                                    store.addPackage(option.full_name).then(res => {});
+
 
                             }
                             window.history.back()

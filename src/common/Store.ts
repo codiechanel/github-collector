@@ -117,9 +117,9 @@ class Store {
       for (let x of items) {
 
         // @ts-ignore
-        this.packages.set(x.name, x)
+        this.packages.set(x.full_name, x)
         // @ts-ignore
-        this.allPackages.set(x.name, x)
+        this.allPackages.set(x.full_name, x)
       }
     })
   }
