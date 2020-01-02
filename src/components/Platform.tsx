@@ -17,7 +17,15 @@ function Platforms (props) {
             onChange={evt => store.changePlatform(evt.currentTarget.value)}
         >
             Pub
-        </Radio></div>
+        </Radio>
+        <Radio
+            value="Github"
+            checked={store.platform === 'Github'}
+            onChange={evt => store.changePlatform(evt.currentTarget.value)}
+        >
+            Github
+        </Radio>
+    </div>
 
 }
 
