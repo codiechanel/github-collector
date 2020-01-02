@@ -59,6 +59,17 @@ class Store {
    return api.packageInfo(item)
   }
 
+
+  async updatePackageWithNpm(npm_name) {
+   let pkg =  await api.updatePackageWithNpm(this.selectedPackage, npm_name)
+    runInAction(() => {
+      let key = this.selectedPackage.full_name
+      this.packages.set(key, pkg);
+      this.allPackages.set(key, pkg);
+    })
+
+  }
+
   prepareTags(name) {
     let oldTags = this.allPackages.get(name).tags;
     let newTags = oldTags;

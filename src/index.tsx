@@ -26,6 +26,7 @@ import Comparison from "./components/Comparison";
 import Contributors from "./components/Contributors";
 import api from "./common/Api";
 import Platforms from "./components/Platform";
+import NpmSearch from "./components/NpmSearch";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -209,6 +210,7 @@ function App(props) {
                     <CommitStats path="commitStats"/>
                     <Comparison path="comparison"/>
                     <Contributors path="contributors"/>
+                    <NpmSearch path="npmSearch"/>
                 </Router>
             </Panel>
         </ThemeProvider>

@@ -24,6 +24,30 @@ class Api {
 
     }
 
+    async updatePackageWithNpm(pkg, npm_name) {
+        let npmResult =  await  axios.get(`https://api.npms.io/v2/package/${npm_name}`);
+     console.log(npmResult)
+        pkg.npm = npmResult.data.collected.npm
+
+        const db = app
+            .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
+            .db("githubdb");
+
+        let result = await db
+            .collection("packages")
+
+            .updateOne(
+                {full_name: pkg.full_name},
+                {
+                    $set: pkg
+                },
+                {upsert: true}
+            );
+
+        return pkg
+
+    }
+
     async refreshPackage(full_name, newTags) {
         // let item = this.allPackages.get(pkgName);
 
@@ -220,12 +244,12 @@ class Api {
     async addPackage(pkg, selectedTagId) {
 
         let {data} = await axios.get(`https://api.github.com/repos/${pkg.full_name}`,);
-        let npmResult =  await  axios.get(`https://api.npms.io/v2/package/${pkg.name}`);
+        // let npmResult =  await  axios.get(`https://api.npms.io/v2/package/${pkg.name}`);
         const newItem = {
             owner_id: app.auth.user.id,
             full_name:data.full_name,
             name: data.name,
-            npm: npmResult.data.collected.npm,
+            // npm: npmResult.data.collected.npm,
             description: data.description,
             resolvedRepoName: data.full_name,
             github: data

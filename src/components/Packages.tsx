@@ -156,6 +156,10 @@ function Packages(props) {
                                 store.changePackage(item)
                                 // store.changeRepo(item.resolvedRepoName)
                                 navigate('contributors')}} >Contributors</Button>
+                            <Button raised onClick={() => {
+                                store.changePackage(item)
+                                // store.changeRepo(item.resolvedRepoName)
+                                navigate('npmSearch')}} >search in npm</Button>
                         </CollapsibleList>
                         </Swipeable>
                     )
