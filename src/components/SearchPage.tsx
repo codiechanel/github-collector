@@ -63,7 +63,7 @@ const SuggestionResults = observer(props => {
                                 // store.refreshPackage(option).then(res => {});
                             } else {
 
-                                    store.addPackage(option.full_name).then(res => {});
+                                    store.addPackage(option).then(res => {});
 
 
                             }

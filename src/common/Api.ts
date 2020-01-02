@@ -159,7 +159,8 @@ class Api {
     }
 
     fetchDemo() {
-        axios.get('https://libraries.io/api/search?q=flutter&api_key=f0e12ad80d97d700fb1c9926fae2f77b&platforms=Pub').then(x => console.log(x))
+        let name = 'react'
+        axios.get(`https://api.npms.io/v2/package/${name}`).then(x => console.log(x))
     }
 
     async getPackageInfo(name) {
@@ -216,13 +217,15 @@ class Api {
         return newItem;
     }
 
-    async addPackage(full_name, selectedTagId) {
+    async addPackage(pkg, selectedTagId) {
 
-        let {data} = await axios.get(`https://api.github.com/repos/${full_name}`,);
+        let {data} = await axios.get(`https://api.github.com/repos/${pkg.full_name}`,);
+        let npmResult =  await  axios.get(`https://api.npms.io/v2/package/${pkg.name}`);
         const newItem = {
             owner_id: app.auth.user.id,
             full_name:data.full_name,
             name: data.name,
+            npm: npmResult.data.collected.npm,
             description: data.description,
             resolvedRepoName: data.full_name,
             github: data
@@ -238,7 +241,7 @@ class Api {
             .collection("packages")
 
             .updateOne(
-                {full_name: full_name},
+                {full_name: pkg.full_name},
                 {
                     $set: newItem
                 },

@@ -12,8 +12,12 @@ class Store {
   @observable keyword = '';
   @observable
   selectedSort = 'noSort'
+  // @observable
+  // selectedRepo = null
   @observable
-  selectedRepo = null
+  selectedSearchItem = null
+  @observable
+  selectedPackage = null
   @observable
   platform = "NPM"
   @observable
@@ -35,12 +39,17 @@ class Store {
   }
 
   @action
-  changeRepo(repo) {
-    this.selectedRepo = repo
+  changePackage(pkg) {
+    this.selectedPackage = pkg
   }
 
+  // @action
+  // changeRepo(repo) {
+  //   this.selectedRepo = repo
+  // }
+
   async fetchCommitStats() {
-  let data =   api.fetchCommitStats(this.selectedRepo)
+  let data =   api.fetchCommitStats(this.selectedPackage.full_name)
     return data
 
 
@@ -90,8 +99,8 @@ class Store {
 
   }
 
-  async addPackage(name) {
-    let [result , newItem] = await api.addPackage(name, this.selectedTagId)
+  async addPackage(pkg) {
+    let [result , newItem] = await api.addPackage(pkg, this.selectedTagId)
     /* if there was an insert upsertedId will have a value*/
     // @ts-ignore
     if (result.upsertedId) {
@@ -124,7 +133,7 @@ class Store {
     })
   }
   async fetchContributors() {
-    let data = await api.fetchContributors(this.selectedRepo)
+    let data = await api.fetchContributors(this.selectedPackage.full_name)
     console.log(data)
     return data
 

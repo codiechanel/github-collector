@@ -147,12 +147,14 @@ function Packages(props) {
                                 refresh
                             </Button>
                             <Button raised onClick={() => {
-                                store.changeRepo(item.resolvedRepoName)
+                                // store.changeRepo(item.resolvedRepoName)
+                                store.changePackage(item)
                                 navigate('commitStats')}}>
                                 commi stats
                             </Button>
                             <Button raised onClick={() => {
-                                store.changeRepo(item.resolvedRepoName)
+                                store.changePackage(item)
+                                // store.changeRepo(item.resolvedRepoName)
                                 navigate('contributors')}} >Contributors</Button>
                         </CollapsibleList>
                         </Swipeable>
