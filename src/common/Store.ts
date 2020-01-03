@@ -175,11 +175,12 @@ class Store {
   @computed
   get packagesArray() {
     let list: any = Array.from(this.packages)
+    console.log('packagesArray', list)
 
     list = api.sortPackages(list, this.selectedSort)
 
 
-    return list
+    return [...list]
 
   }
 

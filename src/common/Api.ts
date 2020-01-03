@@ -140,7 +140,7 @@ class Api {
         let aveMonthly = null
         let diff = null
         let percent = null
-        let starsCount = null
+        let stargazers_count = null
         let created_at = null
         let dependents_count = null
 
@@ -170,9 +170,9 @@ class Api {
             percent = percent.toFixed(0)
         }
 
-
+        stargazers_count = api.formatNumber(item.stargazers_count)
         if (item.github) {
-            starsCount = api.formatNumber(item.github.stargazers_count)
+
             created_at = item.github.created_at
             created_at = dayjs(created_at)
             // @ts-ignore
@@ -193,7 +193,7 @@ class Api {
             aveMonthly,
             diff,
             percent,
-            starsCount,
+            stargazers_count,
             created_at,
             dependents_count,
             dependent_repos_count
@@ -262,6 +262,7 @@ class Api {
     async addPackage(pkg, selectedTagId) {
 
         let {data} = await axios.get(`https://api.github.com/repos/${pkg.full_name}`,);
+        console.log(data)
 
 
         const newItem: any = {
@@ -275,7 +276,6 @@ class Api {
             resolvedRepoName: data.full_name,
             github: data
         };
-
         try {
             if (data.language === "Dart") {
                 let filename = `https://raw.githubusercontent.com/${pkg.full_name}/master/pubspec.yaml`
@@ -292,14 +292,14 @@ class Api {
                 newItem.platform = 'Pub'
 
 
-            } else if (data.language === "JavaScript") {
+            } else if (data.language === "JavaScript" || data.language === "TypeScript" || data.language === "C++") {
                 let filename = `https://raw.githubusercontent.com/${pkg.full_name}/master/package.json`
                 let pkgJson = await axios.get(filename)
                 let pkgJsonData = pkgJson.data
-                if (pkgJsonData.private !== true && pkgJsonData.name) {
+                console.log('pkgJsonData.private !== true', !pkgJsonData.private )
+                if (!pkgJsonData.private  && pkgJsonData.name) {
 
                     let npmResult = await axios.get(`https://api.npms.io/v2/package/${encodeURIComponent(pkgJsonData.name)}`);
-
                     newItem.npm = npmResult.data.collected.npm
                     let {data} = await axios.get(`https://libraries.io/api/NPM/${encodeURIComponent(pkgJsonData.name)}?api_key=${process.env.LIBRARIES_API_KEY}`)
                     newItem.npm.dependent_repos_count = data.dependent_repos_count
@@ -394,7 +394,7 @@ class Api {
     }
 
     sortPackages(list, selectedSort) {
-        if (selectedSort == 'monthlyDownloads') {
+        if (selectedSort === 'monthlyDownloads') {
             list = list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
@@ -407,12 +407,14 @@ class Api {
                     return 0
                 }
             })
-        } else if (selectedSort == 'yearlyDownloads') {
-            list = list.sort((a, b) => {
+        } else if (selectedSort === 'yearlyDownloads') {
+             list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
+
                 if (valA.npm && valB.npm) {
                     let downloadsA = valA.npm.downloads[5].count
+                    console.log('downloadsA',  downloadsA)
                     let downloadsB = valB.npm.downloads[5].count
                     /* sort desc */
                     return downloadsB - downloadsA
@@ -420,7 +422,57 @@ class Api {
                     return 0
                 }
             })
-        } else if (selectedSort == 'sortByYear') {
+        }
+        else if (selectedSort === 'dependents_count') {
+            list.sort((a, b) => {
+                let [keyA, valA] = a
+                let [keyB, valB] = b
+
+                if (valA.npm && valB.npm) {
+                    let downloadsA = valA.npm.dependents_count
+                    console.log('downloadsA',  downloadsA)
+                    let downloadsB = valB.npm.dependents_count
+                    /* sort desc */
+                    return downloadsB - downloadsA
+                } else {
+                    return 0
+                }
+            })
+        }
+        else if (selectedSort === 'dependent_repos_count') {
+            list.sort((a, b) => {
+                let [keyA, valA] = a
+                let [keyB, valB] = b
+
+                if (valA.npm && valB.npm) {
+                    let downloadsA = valA.npm.dependent_repos_count
+                    console.log('downloadsA',  downloadsA)
+                    let downloadsB = valB.npm.dependent_repos_count
+                    /* sort desc */
+                    return downloadsB - downloadsA
+                } else {
+                    return 0
+                }
+            })
+        }
+        else if (selectedSort === 'stars') {
+           list.sort((a, b) => {
+                let [keyA, valA] = a
+                let [keyB, valB] = b
+
+                if (valA.stargazers_count && valB.stargazers_count) {
+                    let downloadsA = valA.stargazers_count
+
+                    let downloadsB = valB.stargazers_count
+                    console.log('valA',  downloadsB - downloadsA)
+                    /* sort desc */
+                    return downloadsB - downloadsA
+                } else {
+                    return 0
+                }
+            })
+        }
+        else if (selectedSort === 'sortByYear') {
             list = list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
@@ -436,7 +488,7 @@ class Api {
                     return 0
                 }
             })
-        } else if (selectedSort == 'percent') {
+        } else if (selectedSort === 'percent') {
             list = list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b

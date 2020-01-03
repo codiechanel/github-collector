@@ -98,7 +98,7 @@ function Packages(props) {
                         aveMonthly,
                         diff,
                         percent,
-                        starsCount,
+                        stargazers_count,
                         created_at,
                         dependents_count,
                         dependent_repos_count
@@ -129,8 +129,8 @@ function Packages(props) {
                                          onClose={() => console.log('close')}
                         >
                             <ChipSet>
-                                {starsCount && <Chip label="stars"> <Typography style={{color: "magenta"}}
-                                                                                use="headline6">{starsCount}</Typography>
+                                {stargazers_count && <Chip label="stars"> <Typography style={{color: "magenta"}}
+                                                                                use="headline6">{stargazers_count}</Typography>
                                 </Chip>}
                                 {created_at && <Chip label="created_at"> <Typography style={{color: "magenta"}}
                                                                                      use="headline6">{created_at}</Typography></Chip>}

@@ -29,6 +29,20 @@ const SortPanel = observer(props => {
             label: 'yearlyDownloads',
             value: 'yearlyDownloads'
         },
+        {
+            label: 'stars',
+            value: 'stars'
+        },
+        {
+            label: 'dependents_count',
+            value: 'dependents_count'
+        },
+        {
+            label: 'dependent_repos_count',
+            value: 'dependent_repos_count'
+        },
+
+
 
     ];
     return <div style={{height: 100}}><Select enhanced value={store.selectedSort}

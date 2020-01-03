@@ -15,6 +15,8 @@ import SortPanel from "./SortPanel";
 import {Typography} from "@rmwc/typography";
 
 function Comparison(props) {
+    console.log('render')
+    let items = store.packagesArray
     let labels = ['Package', 'downloadsLastMonth',
         'downloadsLastYear',
         'aveMonthly',
@@ -37,18 +39,20 @@ function Comparison(props) {
                 </DataTableHead>
                 <DataTableBody>
 
-                    {store.packagesArray.map(([key, item]) => {
+                    {items.map((entry, i) => {
+                        let [key, item] = entry;
+                        console.log(key)
 
 
                         let pkgInfo = store.packageInfo(item)
 
-                        Object.keys(pkgInfo).forEach(x => console.log(x))
+                        // Object.keys(pkgInfo).forEach(x => console.log(x))
 
-                        return (<DataTableRow key={key}>
+                        return (<DataTableRow key={key+i}>
                             <DataTableCell><Typography use="headline6">{item.name}</Typography></DataTableCell>
                             {/*<Typography style={{color: (Math.sign(percent) === 1) ? "green": "red"}}*/}
                             {/*            use="headline6">{diff}</Typography>*/}
-                            {Object.keys(pkgInfo).map(x => <DataTableCell key={x}><Typography
+                            {Object.keys(pkgInfo).map((x, i) => <DataTableCell key={x+i}><Typography
                                 use="subtitle1">{pkgInfo[x]}</Typography></DataTableCell>)}
 
                         </DataTableRow>)
