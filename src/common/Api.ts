@@ -145,13 +145,14 @@ class Api {
         let dependents_count = null
 
         let dependent_repos_count = null
-        if (item.pub) {
-            dependents_count = item.pub.dependents_count
-            dependent_repos_count = item.pub.dependent_repos_count
+        if (item.stats) {
+            dependents_count = item.stats.dependents_count  ?  this.formatNumber(item.stats.dependents_count ) : null
+            dependent_repos_count = item.stats.dependent_repos_count ?  this.formatNumber(item.stats.dependent_repos_count) : null
+
         }
         if (item.npm) {
-            dependents_count = item.npm.dependents_count  ?  this.formatNumber(item.npm.dependents_count ) : null
-            dependent_repos_count = item.npm.dependent_repos_count ?  this.formatNumber(item.npm.dependent_repos_count) : null
+            // dependents_count = item.npm.dependents_count  ?  this.formatNumber(item.npm.dependents_count ) : null
+            // dependent_repos_count = item.npm.dependent_repos_count ?  this.formatNumber(item.npm.dependent_repos_count) : null
 
 
             let downloadsLastYearNum = item.npm.downloads[5].count
@@ -285,7 +286,10 @@ class Api {
                 let doc = yaml.load(pkgJsonData)
                 let {data} = await axios.get(`https://libraries.io/api/Pub/${doc.name}?api_key=${process.env.LIBRARIES_API_KEY}`)
                 newItem.pub = {
-                    name: data.name,
+                    name: doc.name,
+
+                }
+                newItem.stats = {
                     dependent_repos_count: data.dependent_repos_count,
                     dependents_count: data.dependents_count
                 }
@@ -300,10 +304,17 @@ class Api {
                 if (!pkgJsonData.private  && pkgJsonData.name) {
 
                     let npmResult = await axios.get(`https://api.npms.io/v2/package/${encodeURIComponent(pkgJsonData.name)}`);
+
                     newItem.npm = npmResult.data.collected.npm
                     let {data} = await axios.get(`https://libraries.io/api/NPM/${encodeURIComponent(pkgJsonData.name)}?api_key=${process.env.LIBRARIES_API_KEY}`)
-                    newItem.npm.dependent_repos_count = data.dependent_repos_count
-                    newItem.npm.dependents_count = data.dependents_count
+                    // newItem.npm.dependent_repos_count = data.dependent_repos_count
+                    // newItem.npm.dependents_count = data.dependents_count
+
+                    newItem.stats = {
+                        dependent_repos_count: data.dependent_repos_count,
+                        dependents_count: data.dependents_count
+                    }
+                    newItem.platform = 'NPM'
                 }
 
 
@@ -398,61 +409,66 @@ class Api {
             list = list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
-                if (valA.npm && valB.npm) {
+                let downloadsA = valA.npm ? valA.npm.downloads[2].count : 0
+                let downloadsB = valB.npm ?  valB.npm.downloads[2].count : 0
+                return downloadsB - downloadsA
+               /* if (valA.npm && valB.npm) {
                     let downloadsA = valA.npm.downloads[2].count
                     let downloadsB = valB.npm.downloads[2].count
-                    /* sort desc */
+                    /!* sort desc *!/
                     return downloadsB - downloadsA
                 } else {
                     return 0
-                }
+                }*/
             })
         } else if (selectedSort === 'yearlyDownloads') {
              list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
 
-                if (valA.npm && valB.npm) {
-                    let downloadsA = valA.npm.downloads[5].count
-                    console.log('downloadsA',  downloadsA)
-                    let downloadsB = valB.npm.downloads[5].count
-                    /* sort desc */
-                    return downloadsB - downloadsA
-                } else {
-                    return 0
-                }
+                 let downloadsA = valA.npm ? valA.npm.downloads[5].count : 0
+                 let downloadsB = valB.npm ?  valB.npm.downloads[5].count : 0
+                 return downloadsB - downloadsA
+
             })
         }
         else if (selectedSort === 'dependents_count') {
             list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
+                // let platfform = newItem.platform = 'Pub')
+                let downloadsA = valA.stats ? valA.stats.dependents_count : 0
+                let downloadsB = valB.stats ?  valB.stats.dependents_count : 0
+                return downloadsB - downloadsA
 
-                if (valA.npm && valB.npm) {
+           /*     if (valA.npm && valB.npm) {
                     let downloadsA = valA.npm.dependents_count
                     console.log('downloadsA',  downloadsA)
                     let downloadsB = valB.npm.dependents_count
-                    /* sort desc */
+                    /!* sort desc *!/
                     return downloadsB - downloadsA
                 } else {
                     return 0
-                }
+                }*/
             })
         }
         else if (selectedSort === 'dependent_repos_count') {
             list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
+                let downloadsA = valA.stats ? valA.stats.dependent_repos_count : 0
+                let downloadsB = valB.stats ?  valB.stats.dependent_repos_count : 0
+                return downloadsB - downloadsA
 
-                if (valA.npm && valB.npm) {
+              /*  if (valA.npm && valB.npm) {
                     let downloadsA = valA.npm.dependent_repos_count
                     console.log('downloadsA',  downloadsA)
                     let downloadsB = valB.npm.dependent_repos_count
-                    /* sort desc */
+                    /!* sort desc *!/
                     return downloadsB - downloadsA
                 } else {
                     return 0
-                }
+                }*/
             })
         }
         else if (selectedSort === 'stars') {

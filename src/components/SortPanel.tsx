@@ -41,6 +41,11 @@ const SortPanel = observer(props => {
             label: 'dependent_repos_count',
             value: 'dependent_repos_count'
         },
+        {
+            label: 'aveMonthly',
+            value: 'aveMonthly'
+        },
+
 
 
 
