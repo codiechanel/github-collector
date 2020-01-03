@@ -65,7 +65,6 @@ const SuggestionResults = observer(props => {
             // }
 
 
-            // let url = `   https://libraries.io/api/search?q=${keyword}&api_key=f0e12ad80d97d700fb1c9926fae2f77b&platforms=${store.platform}`;
 
 
             let {data} = await axios.get(url, config)

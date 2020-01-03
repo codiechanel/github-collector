@@ -190,6 +190,7 @@ function App(props) {
               <TopAppBarTitle>NewsApp</TopAppBarTitle>
             </TopAppBarSection>
             <TopAppBarSection alignEnd>
+                <CreateTagButton />
               <TopAppBarActionItem
                 onClick={() => {
                   // api.fetchGoogleNews(item.keyword);
@@ -201,8 +202,8 @@ function App(props) {
           </TopAppBarRow>
         </TopAppBar>
         <TopAppBarFixedAdjust />
-<Platforms/>
-                 <CreateTagButton />
+{/*<Platforms/>*/}
+
                 <Router>
                     <Tags path="/"/>
                     <Packages path="packages"/>

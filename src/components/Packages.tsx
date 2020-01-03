@@ -90,6 +90,8 @@ function Packages(props) {
                 <Button onClick={() => navigate('comparison')}>compare</Button>
             <List twoLine>
                 {store.packagesArray.map(([key, item]) => {
+                    // language JavaScript
+                    // "language": "Dart",
                     let {
                         downloadsLastMonth,
                         downloadsLastYear,
@@ -97,8 +99,14 @@ function Packages(props) {
                         diff,
                         percent,
                         starsCount,
-                        created_at
+                        created_at,
+                        dependents_count,
+                        dependent_repos_count
                     } = store.packageInfo(item)
+
+                    // if (item.platform === 'Pub' ) {
+                    //
+                    // }
 
                     return (
                         <Swipeable
@@ -142,7 +150,21 @@ function Packages(props) {
                                 <Chip icon={"cloud_download"} label="percent"> <Typography style={{color: (Math.sign(percent) === 1) ? "green": "red"}}
                                                                                         use="headline6">{percent}%</Typography></Chip>}
 
+                                {dependents_count &&
+                                <Chip icon={"cloud_download"} label="dependents_count"> <Typography
+                                                                                           use="headline6">{dependents_count}</Typography></Chip>}
+
+                                {dependent_repos_count &&
+                                <Chip icon={"cloud_download"} label="dependent_repos_count"> <Typography
+                                    use="headline6">{dependent_repos_count}</Typography></Chip>}
+
                             </ChipSet>
+                            <Button raised onClick={() => {} }>
+                                details
+                            </Button>
+                            <Button raised onClick={() => window.open(item.github.html_url, '_blank') }>
+                                open
+                            </Button>
                             <Button raised onClick={() => {store.refreshPackage(item.resolvedRepoName).then()}}>
                                 refresh
                             </Button>

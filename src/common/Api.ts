@@ -4,6 +4,7 @@ import {RemoteMongoClient, UserPasswordCredential} from 'mongodb-stitch-browser-
 import {app} from './stitch'
 import axios from "axios";
 import * as dayjs from "dayjs";
+import * as yaml from 'js-yaml'
 import {action} from "mobx";
 import store from "./Store";
 
@@ -24,9 +25,14 @@ class Api {
 
     }
 
+
+
     async updatePackageWithNpm(pkg, npm_name) {
         let npmResult = await axios.get(`https://api.npms.io/v2/package/${npm_name}`);
         pkg.npm = npmResult.data.collected.npm
+        let {data} = await axios.get(`https://libraries.io/api/NPM/${encodeURIComponent(npm_name)}?api_key=${process.env.LIBRARIES_API_KEY}`)
+        pkg.npm.dependent_repos_count = data.dependent_repos_count
+        pkg.npm.dependents_count = data.dependents_count
 
         const db = app
             .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
@@ -136,7 +142,18 @@ class Api {
         let percent = null
         let starsCount = null
         let created_at = null
+        let dependents_count = null
+
+        let dependent_repos_count = null
+        if (item.pub) {
+            dependents_count = item.pub.dependents_count
+            dependent_repos_count = item.pub.dependent_repos_count
+        }
         if (item.npm) {
+            dependents_count = item.npm.dependents_count  ?  this.formatNumber(item.npm.dependents_count ) : null
+            dependent_repos_count = item.npm.dependent_repos_count ?  this.formatNumber(item.npm.dependent_repos_count) : null
+
+
             let downloadsLastYearNum = item.npm.downloads[5].count
             let downloadsLastMonthNum = item.npm.downloads[2].count
             let aveMonthlyNum = downloadsLastYearNum / 12
@@ -177,7 +194,9 @@ class Api {
             diff,
             percent,
             starsCount,
-            created_at
+            created_at,
+            dependents_count,
+            dependent_repos_count
         }
     }
 
@@ -258,14 +277,34 @@ class Api {
         };
 
         try {
-            let filename = `https://raw.githubusercontent.com/${pkg.full_name}/master/package.json`
-            // await axios.head(filename)
-            let pkgJson = await axios.get(filename)
-            let pkgJsonData = pkgJson.data
-            if (pkgJsonData.private !== true && pkgJsonData.name) {
+            if (data.language === "Dart") {
+                let filename = `https://raw.githubusercontent.com/${pkg.full_name}/master/pubspec.yaml`
+                let pkgJson = await axios.get(filename)
+                let pkgJsonData = pkgJson.data
 
-                let npmResult = await axios.get(`https://api.npms.io/v2/package/${encodeURIComponent(pkgJsonData.name)}`);
-                newItem.npm = npmResult.data.collected.npm
+                let doc = yaml.load(pkgJsonData)
+                let {data} = await axios.get(`https://libraries.io/api/Pub/${doc.name}?api_key=${process.env.LIBRARIES_API_KEY}`)
+                newItem.pub = {
+                    name: data.name,
+                    dependent_repos_count: data.dependent_repos_count,
+                    dependents_count: data.dependents_count
+                }
+                newItem.platform = 'Pub'
+
+
+            } else if (data.language === "JavaScript") {
+                let filename = `https://raw.githubusercontent.com/${pkg.full_name}/master/package.json`
+                let pkgJson = await axios.get(filename)
+                let pkgJsonData = pkgJson.data
+                if (pkgJsonData.private !== true && pkgJsonData.name) {
+
+                    let npmResult = await axios.get(`https://api.npms.io/v2/package/${encodeURIComponent(pkgJsonData.name)}`);
+
+                    newItem.npm = npmResult.data.collected.npm
+                    let {data} = await axios.get(`https://libraries.io/api/NPM/${encodeURIComponent(pkgJsonData.name)}?api_key=${process.env.LIBRARIES_API_KEY}`)
+                    newItem.npm.dependent_repos_count = data.dependent_repos_count
+                    newItem.npm.dependents_count = data.dependents_count
+                }
 
 
             }
@@ -385,10 +424,10 @@ class Api {
             list = list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
-                if (valA.githubExtra && valB.githubExtra) {
-                    let createdA = valA.githubExtra.created_at
+                if (valA.github && valB.github) {
+                    let createdA = valA.github.created_at
                     createdA = dayjs(createdA).unix()
-                    let createdB = valB.githubExtra.created_at
+                    let createdB = valB.github.created_at
                     createdB = dayjs(createdB).unix()
                     /* in unix time since epoch
                     the more recent date has a greater integer value  */

@@ -24,22 +24,11 @@ const SuggestionResults = observer(props => {
         const fetchData = async (keyword = '') => {
             if (keyword.trim() == '' || keyword.length < 3) return [];
             let url
-            // if (store.platform === 'Github') {
             url = `https://api.npms.io/v2/search/suggestions?q=${keyword}`;
-            // }
-            // else {
-            //      url = `https://api.npms.io/v2/search/suggestions?q=${keyword}`;
-            // }
-
-
-            // let url = `   https://libraries.io/api/search?q=${keyword}&api_key=f0e12ad80d97d700fb1c9926fae2f77b&platforms=${store.platform}`;
 
 
             let {data} = await axios.get(url)
-            // if (store.platform === 'Github') {
-            //     data = data.items
-            // }
-            // data = data.items
+
             const result = []
             for (const x of data) {
                 result.push(x)

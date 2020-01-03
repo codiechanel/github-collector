@@ -21,14 +21,17 @@ function Comparison(props) {
         'diff',
         'percent',
         'starsCount',
-        'created_at']
+        'created_at',
+        'dependents_count',
+        'dependent_repos_count']
     return <div>
         <SortPanel/>
         <DataTable>
             <DataTableContent>
                 <DataTableHead>
                     <DataTableRow>
-                        {labels.map(x => <DataTableHeadCell key={x}><Typography  use="headline6">{x}</Typography> </DataTableHeadCell>)}
+                        {labels.map(x => <DataTableHeadCell key={x}><Typography use="headline6">{x}</Typography>
+                        </DataTableHeadCell>)}
 
                     </DataTableRow>
                 </DataTableHead>
@@ -42,10 +45,11 @@ function Comparison(props) {
                         Object.keys(pkgInfo).forEach(x => console.log(x))
 
                         return (<DataTableRow key={key}>
-                            <DataTableCell><Typography  use="headline6">{item.name}</Typography></DataTableCell>
+                            <DataTableCell><Typography use="headline6">{item.name}</Typography></DataTableCell>
                             {/*<Typography style={{color: (Math.sign(percent) === 1) ? "green": "red"}}*/}
                             {/*            use="headline6">{diff}</Typography>*/}
-                            {Object.keys(pkgInfo).map(x => <DataTableCell key={x}><Typography  use="subtitle1">{pkgInfo[x]}</Typography></DataTableCell>)}
+                            {Object.keys(pkgInfo).map(x => <DataTableCell key={x}><Typography
+                                use="subtitle1">{pkgInfo[x]}</Typography></DataTableCell>)}
 
                         </DataTableRow>)
                     })}
@@ -54,7 +58,7 @@ function Comparison(props) {
                 </DataTableBody>
             </DataTableContent>
         </DataTable>
-        </div>
+    </div>
 }
 
 export default observer(Comparison)

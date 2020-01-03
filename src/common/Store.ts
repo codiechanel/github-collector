@@ -117,8 +117,9 @@ class Store {
     if (result.upsertedId) {
       // @ts-ignore
       newItem._id = result.upsertedId;
-      this.packages.set(name, newItem);
-      this.allPackages.set(name, newItem);
+      let key = newItem.full_name
+      this.packages.set(key, newItem);
+      this.allPackages.set(key, newItem);
       // set(this.packages, result.upsertedId.toString(), newItem);
 
       return true;
