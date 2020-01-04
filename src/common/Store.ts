@@ -144,8 +144,8 @@ class Store {
       }
     })
   }
-  async fetchContributors() {
-    let data = await api.fetchContributors(this.selectedPackage.full_name)
+  async fetchContributors(full_name) {
+    let data = await api.fetchContributors(full_name)
     return data
 
   }

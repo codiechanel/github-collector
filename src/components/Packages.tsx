@@ -175,9 +175,9 @@ function Packages(props) {
                                 commit stats
                             </Button>
                             <Button raised onClick={() => {
-                                store.changePackage(item)
+                                // store.changePackage(item)
                                 // store.changeRepo(item.resolvedRepoName)
-                                navigate('contributors')}} >Contributors</Button>
+                                navigate(`contributors/${encodeURIComponent( key) }`)}} >Contributors</Button>
                             <Button raised onClick={() => {
                                 store.changePackage(item)
                                 // store.changeRepo(item.resolvedRepoName)
