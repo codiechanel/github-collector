@@ -16,6 +16,7 @@
 		"react": "^16.9.0",
 		"react-dom": "^16.9.0",
 		"react-swipeable": "^5.5.0",
+		"react-use": "^13.14.0",
 		"rmwc": "5.7.2",
 		"styled-components": "4.4.1"
 	},

@@ -48,8 +48,8 @@ class Store {
   //   this.selectedRepo = repo
   // }
 
-  async fetchCommitStats() {
-  let data =   api.fetchCommitStats(this.selectedPackage.full_name)
+  async fetchCommitStats(full_name) {
+  let data =   api.fetchCommitStats(full_name)
     return data
 
 

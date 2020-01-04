@@ -26,13 +26,15 @@ class Api {
     }
 
 
-
     async updatePackageWithNpm(pkg, npm_name) {
         let npmResult = await axios.get(`https://api.npms.io/v2/package/${npm_name}`);
         pkg.npm = npmResult.data.collected.npm
         let {data} = await axios.get(`https://libraries.io/api/NPM/${encodeURIComponent(npm_name)}?api_key=${process.env.LIBRARIES_API_KEY}`)
-        pkg.npm.dependent_repos_count = data.dependent_repos_count
-        pkg.npm.dependents_count = data.dependents_count
+        pkg.stats = {
+            dependent_repos_count: data.dependent_repos_count,
+            dependents_count: data.dependents_count
+        }
+
 
         const db = app
             .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
@@ -146,8 +148,8 @@ class Api {
 
         let dependent_repos_count = null
         if (item.stats) {
-            dependents_count = item.stats.dependents_count  ?  this.formatNumber(item.stats.dependents_count ) : null
-            dependent_repos_count = item.stats.dependent_repos_count ?  this.formatNumber(item.stats.dependent_repos_count) : null
+            dependents_count = item.stats.dependents_count ? this.formatNumber(item.stats.dependents_count) : null
+            dependent_repos_count = item.stats.dependent_repos_count ? this.formatNumber(item.stats.dependent_repos_count) : null
 
         }
         if (item.npm) {
@@ -300,8 +302,8 @@ class Api {
                 let filename = `https://raw.githubusercontent.com/${pkg.full_name}/master/package.json`
                 let pkgJson = await axios.get(filename)
                 let pkgJsonData = pkgJson.data
-                console.log('pkgJsonData.private !== true', !pkgJsonData.private )
-                if (!pkgJsonData.private  && pkgJsonData.name) {
+                console.log('pkgJsonData.private !== true', !pkgJsonData.private)
+                if (!pkgJsonData.private && pkgJsonData.name) {
 
                     let npmResult = await axios.get(`https://api.npms.io/v2/package/${encodeURIComponent(pkgJsonData.name)}`);
 
@@ -410,69 +412,66 @@ class Api {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
                 let downloadsA = valA.npm ? valA.npm.downloads[2].count : 0
-                let downloadsB = valB.npm ?  valB.npm.downloads[2].count : 0
+                let downloadsB = valB.npm ? valB.npm.downloads[2].count : 0
                 return downloadsB - downloadsA
-               /* if (valA.npm && valB.npm) {
-                    let downloadsA = valA.npm.downloads[2].count
-                    let downloadsB = valB.npm.downloads[2].count
-                    /!* sort desc *!/
-                    return downloadsB - downloadsA
-                } else {
-                    return 0
-                }*/
+                /* if (valA.npm && valB.npm) {
+                     let downloadsA = valA.npm.downloads[2].count
+                     let downloadsB = valB.npm.downloads[2].count
+                     /!* sort desc *!/
+                     return downloadsB - downloadsA
+                 } else {
+                     return 0
+                 }*/
             })
         } else if (selectedSort === 'yearlyDownloads') {
-             list.sort((a, b) => {
+            list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
 
-                 let downloadsA = valA.npm ? valA.npm.downloads[5].count : 0
-                 let downloadsB = valB.npm ?  valB.npm.downloads[5].count : 0
-                 return downloadsB - downloadsA
+                let downloadsA = valA.npm ? valA.npm.downloads[5].count : 0
+                let downloadsB = valB.npm ? valB.npm.downloads[5].count : 0
+                return downloadsB - downloadsA
 
             })
-        }
-        else if (selectedSort === 'dependents_count') {
+        } else if (selectedSort === 'dependents_count') {
             list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
                 // let platfform = newItem.platform = 'Pub')
                 let downloadsA = valA.stats ? valA.stats.dependents_count : 0
-                let downloadsB = valB.stats ?  valB.stats.dependents_count : 0
+                let downloadsB = valB.stats ? valB.stats.dependents_count : 0
                 return downloadsB - downloadsA
 
-           /*     if (valA.npm && valB.npm) {
-                    let downloadsA = valA.npm.dependents_count
-                    console.log('downloadsA',  downloadsA)
-                    let downloadsB = valB.npm.dependents_count
-                    /!* sort desc *!/
-                    return downloadsB - downloadsA
-                } else {
-                    return 0
-                }*/
+                /*     if (valA.npm && valB.npm) {
+                         let downloadsA = valA.npm.dependents_count
+                         console.log('downloadsA',  downloadsA)
+                         let downloadsB = valB.npm.dependents_count
+                         /!* sort desc *!/
+                         return downloadsB - downloadsA
+                     } else {
+                         return 0
+                     }*/
             })
-        }
-        else if (selectedSort === 'dependent_repos_count') {
+        } else if (selectedSort === 'dependent_repos_count') {
             list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
                 let downloadsA = valA.stats ? valA.stats.dependent_repos_count : 0
-                let downloadsB = valB.stats ?  valB.stats.dependent_repos_count : 0
+                let downloadsB = valB.stats ? valB.stats.dependent_repos_count : 0
                 return downloadsB - downloadsA
 
-              /*  if (valA.npm && valB.npm) {
-                    let downloadsA = valA.npm.dependent_repos_count
-                    console.log('downloadsA',  downloadsA)
-                    let downloadsB = valB.npm.dependent_repos_count
-                    /!* sort desc *!/
-                    return downloadsB - downloadsA
-                } else {
-                    return 0
-                }*/
+                /*  if (valA.npm && valB.npm) {
+                      let downloadsA = valA.npm.dependent_repos_count
+                      console.log('downloadsA',  downloadsA)
+                      let downloadsB = valB.npm.dependent_repos_count
+                      /!* sort desc *!/
+                      return downloadsB - downloadsA
+                  } else {
+                      return 0
+                  }*/
             })
-        }
-        else if (selectedSort === 'stars') {
-           list.sort((a, b) => {
+        } else if (selectedSort === 'stars') {
+            list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
 
@@ -480,15 +479,14 @@ class Api {
                     let downloadsA = valA.stargazers_count
 
                     let downloadsB = valB.stargazers_count
-                    console.log('valA',  downloadsB - downloadsA)
+                    console.log('valA', downloadsB - downloadsA)
                     /* sort desc */
                     return downloadsB - downloadsA
                 } else {
                     return 0
                 }
             })
-        }
-        else if (selectedSort === 'sortByYear') {
+        } else if (selectedSort === 'sortByYear') {
             list = list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
@@ -508,19 +506,36 @@ class Api {
             list = list.sort((a, b) => {
                 let [keyA, valA] = a
                 let [keyB, valB] = b
-                if (valA.npm && valB.npm) {
+                // lets use a negative value so these would go to the bottom
+                // of the list
+                let percentA = -99
+                let percentB = -99
+                if (valA.npm) {
                     let downloadsMonthA = valA.npm.downloads[2].count
                     let downloadsYearA = valA.npm.downloads[5].count
+                    percentA = this.computePercentInc(downloadsMonthA, downloadsYearA)
+
+                }
+                if (valB.npm) {
                     let downloadsMonthB = valB.npm.downloads[2].count
                     let downloadsYearB = valB.npm.downloads[5].count
+                    percentB = this.computePercentInc(downloadsMonthB, downloadsYearB)
 
-                    let percentA = this.computePercentInc(downloadsMonthA, downloadsYearA)
-                    let percentB = this.computePercentInc(downloadsMonthB, downloadsYearB)
-                    /* sort desc */
-                    return percentB - percentA
-                } else {
-                    return 0
                 }
+                return percentB - percentA
+                /*  if (valA.npm && valB.npm) {
+                      let downloadsMonthA = valA.npm.downloads[2].count
+                      let downloadsYearA = valA.npm.downloads[5].count
+                      let downloadsMonthB = valB.npm.downloads[2].count
+                      let downloadsYearB = valB.npm.downloads[5].count
+
+                      let percentA = this.computePercentInc(downloadsMonthA, downloadsYearA)
+                      let percentB = this.computePercentInc(downloadsMonthB, downloadsYearB)
+                      /!* sort desc *!/
+                      return percentB - percentA
+                  } else {
+                      return 0
+                  }*/
             })
         }
         return list

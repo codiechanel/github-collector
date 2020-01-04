@@ -5,21 +5,8 @@ import {useEffect} from "react";
 import * as d3  from 'd3'
 import { line, curveBasis }  from 'd3'
 import store from "../common/Store";
+import {useAsync} from 'react-use';
 
-function useLoader() {
-    const [options, setOptions] = useState(null);
-    // const [data, setData] = useState('loading')
-    useEffect(() => {
-        // Update the document title using the browser API
-        // store.fetchNews();
-        const fetchData = async () => {
-            let data = await store.fetchCommitStats()
-            setOptions(data)
-        }
-        fetchData()
-    }, [])
-    return options
-}
 
 function renderLineChart(svg, data ) {
     let domainMinMax = d3.extent(data, d => {
@@ -79,12 +66,20 @@ function renderLineChart(svg, data ) {
 }
 
 function CommitStats(props) {
+    console.log('render', props)
+    let full_name  = props.full_name
     const inputEl = useRef(null);
-    let data = useLoader()
-    if (data) {
+    // let data = useLoader(props.full_name)
+    const state = useAsync(async () => {
+        // const response = await fetch(url);
+        // const result = await response.text();
+        let result = await store.fetchCommitStats(full_name)
+        return result
+    }, [full_name]);
+    if (!state.loading && !state.error) {
         let result = [];
         // @ts-ignore
-        data.all.slice(0, 20).forEach((x, i) => {
+        state.value.all.slice(0, 20).forEach((x, i) => {
 
             result.push({label: `week ${i}`, commits: x});
         });

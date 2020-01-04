@@ -170,9 +170,9 @@ function Packages(props) {
                             </Button>
                             <Button raised onClick={() => {
                                 // store.changeRepo(item.resolvedRepoName)
-                                store.changePackage(item)
-                                navigate('commitStats')}}>
-                                commi stats
+                                // store.changePackage(item)
+                                navigate(`commitStats/${encodeURIComponent( key) }`)}}>
+                                commit stats
                             </Button>
                             <Button raised onClick={() => {
                                 store.changePackage(item)

@@ -208,9 +208,9 @@ function App(props) {
                     <Tags path="/"/>
                     <Packages path="packages"/>
                     <SearchPage path="searchPage"/>
-                    <CommitStats path="commitStats"/>
+                    <CommitStats path="commitStats/:full_name"/>
                     <Comparison path="comparison"/>
-                    <Contributors path="contributors"/>
+                    <Contributors path="contributors/:full_name"/>
                     <NpmSearch path="npmSearch"/>
                 </Router>
             </Panel>
