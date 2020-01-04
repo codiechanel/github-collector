@@ -1,5 +1,4 @@
 const path = require('path');
-var webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 

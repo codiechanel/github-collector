@@ -1,4 +1,5 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 /* const autoprefixer = require('autoprefixer')
 const postCSSLoaderOptions = {
@@ -13,35 +14,42 @@ const postCSSLoaderOptions = {
   ],
 } */
 module.exports = {
-	// plugins: [new BundleAnalyzerPlugin()],
-	mode: 'production',
-	entry: './src/index.tsx',
-	optimization: {
-		splitChunks: {
-			chunks: 'initial'
-		}
-	},
-	output: {
-		path: path.resolve(__dirname, 'public'),
-		filename: 'bundle.js'
-	},
-	resolve: {
-		alias: {
-			moment: 'dayjs',
-			'@ant-design/icons/lib/dist$': path.resolve(__dirname, './src/icons.js')
-		},
-		// Add '.ts' and '.tsx' as resolvable extensions.
-		extensions: ['.ts', '.tsx', '.js', '.json']
-	},
-	module: {
-		rules: [
-			{
-				test: /\.tsx?$/,
-				loader: 'ts-loader'
-			}
-		]
-	}
-	/* externals: {
+    plugins: [new Dotenv()],
+
+    mode: 'production',
+    entry: './src/index.tsx',
+    optimization: {
+        splitChunks: {
+            chunks: 'initial'
+        }
+    },
+    output: {
+        path: path.resolve(__dirname, 'public'),
+        filename: '[name].bundle.js',
+        // filename: 'bundle.js'
+    },
+    resolve: {
+        alias: {
+            moment: 'dayjs',
+            '@ant-design/icons/lib/dist$': path.resolve(__dirname, './src/icons.js')
+        },
+        // Add '.ts' and '.tsx' as resolvable extensions.
+        extensions: ['.ts', '.tsx', '.js', '.json']
+    },
+    module: {
+        rules: [
+            {
+                test: /\.tsx?$/,
+                loader: 'ts-loader'
+            }
+            ,
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader']
+            }
+        ]
+    }
+    /* externals: {
       react: 'React',
       'react-dom': 'ReactDOM',
       'prop-types': 'PropTypes',

@@ -9,7 +9,13 @@ import {
 } from "@rmwc/top-app-bar";
 import {navigate} from '@reach/router'
 
-function AppBar({ showBackButton , title, children }  ) {
+type AppBarProps = {
+    showBackButton?: boolean,
+    title: string,
+    children?: any[]
+}
+
+function AppBar({ showBackButton , title, children }: AppBarProps  ) {
 
 
     return <>  <TopAppBar>
