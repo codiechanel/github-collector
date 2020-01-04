@@ -15,22 +15,24 @@ import {Snackbar, SnackbarAction} from '@rmwc/snackbar';
 import {Swipeable} from 'react-swipeable';
 import {navigate} from '@reach/router'
 import SortPanel from './SortPanel'
+import {useAsync} from 'react-use';
 
 dayjs.extend(relativeTime)
 
-function useLoader() {
-    const [data, setData] = useState('loading')
-    useEffect(() => {
-        // Update the document title using the browser API
-        // store.fetchNews();
-        const fetchData = async () => {
-            await store.fetchPackages()
-            setData('done')
-        }
-        fetchData()
-    }, [])
-    return data
-}
+// function useLoader() {
+//     const [data, setData] = useState('loading')
+//
+//     useEffect(() => {
+//         // Update the document title using the browser API
+//         // store.fetchNews();
+//         const fetchData = async () => {
+//             await store.fetchPackages()
+//             setData('done')
+//         }
+//         fetchData()
+//     }, [])
+//     return data
+// }
 
 export const FullHeight = styled.div`
   display: flex;
@@ -65,8 +67,15 @@ const config = {
 };
 
 function Packages(props) {
+    let tag = props.tag
     const [open, setOpen] = useState(false);
-    let data = useLoader()
+    const state = useAsync(async () => {
+        // const response = await fetch(url);
+        // const result = await response.text();
+         await store.fetchPackages(tag)
+        return 'done'
+    }, [tag]);
+    // let data = useLoader()
     // let list: any = Array.from(store.packages)
     //   let content = <div>hello</div>
     let content = (
@@ -74,7 +83,7 @@ function Packages(props) {
             <CircularProgress/>
         </CenteredFlex>
     )
-    if (data === 'done') {
+    if (!state.loading && !state.error) {
         content = (<>
                 <Snackbar
                     open={open}
@@ -171,17 +180,17 @@ function Packages(props) {
                             <Button raised onClick={() => {
                                 // store.changeRepo(item.resolvedRepoName)
                                 // store.changePackage(item)
-                                navigate(`commitStats/${encodeURIComponent( key) }`)}}>
+                                navigate(`/commitStats/${encodeURIComponent( key) }`)}}>
                                 commit stats
                             </Button>
                             <Button raised onClick={() => {
                                 // store.changePackage(item)
                                 // store.changeRepo(item.resolvedRepoName)
-                                navigate(`contributors/${encodeURIComponent( key) }`)}} >Contributors</Button>
+                                navigate(`/contributors/${encodeURIComponent( key) }`)}} >Contributors</Button>
                             <Button raised onClick={() => {
                                 store.changePackage(item)
                                 // store.changeRepo(item.resolvedRepoName)
-                                navigate('npmSearch')}} >search in npm</Button>
+                                navigate('/npmSearch')}} >search in npm</Button>
                         </CollapsibleList>
                         </Swipeable>
                     )

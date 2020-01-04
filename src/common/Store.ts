@@ -132,10 +132,11 @@ class Store {
         }
     }
 
-    async fetchPackages() {
-        let items = await api.fetchPackagesByTag(this.selectedTagId)
+    async fetchPackages(tag) {
+        let items = await api.fetchPackagesByTag(tag)
         runInAction(() => {
             this.packages.clear()
+            this.selectedTagId  = tag
             for (let x of items) {
 
                 // @ts-ignore

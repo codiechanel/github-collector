@@ -206,12 +206,12 @@ function App(props) {
 
                 <Router>
                     <Tags path="/"/>
-                    <Packages path="packages"/>
+                    <Packages path="/packages/:tag"/>
                     <SearchPage path="searchPage"/>
-                    <CommitStats path="commitStats/:full_name"/>
+                    <CommitStats path="/commitStats/:full_name"/>
                     <Comparison path="comparison"/>
-                    <Contributors path="contributors/:full_name"/>
-                    <NpmSearch path="npmSearch"/>
+                    <Contributors path="/contributors/:full_name"/>
+                    <NpmSearch path="/npmSearch"/>
                 </Router>
             </Panel>
         </ThemeProvider>

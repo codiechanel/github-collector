@@ -14,8 +14,8 @@ function Tags(props) {
         <ListItem
           key={key}
           onClick={() => {
-            store.selectedTagId = key
-            navigate(`packages`, { replace: false })
+            // store.selectedTagId = key
+            navigate(`/packages/${key}`, { replace: false })
           }}
         >
           <Typography use="body1"> {item.name}</Typography>
