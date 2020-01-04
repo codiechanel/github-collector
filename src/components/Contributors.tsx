@@ -1,13 +1,10 @@
 import * as React from 'react'
 import {observer} from 'mobx-react'
-import {useState} from "react";
-import {useEffect} from "react";
 import store from "../common/Store";
 import {List, SimpleListItem} from "@rmwc/list";
 import '@rmwc/avatar/avatar.css';
 import {Avatar} from '@rmwc/avatar'
 import {useAsync} from 'react-use';
-
 
 
 function Contributors(props) {
