@@ -9,9 +9,7 @@ import {
 } from "@rmwc/top-app-bar";
 import {navigate} from '@reach/router'
 
-function AppBar(props ) {
-    let { showBackButton , title }  =  props
-    console.log('show back', showBackButton)
+function AppBar({ showBackButton , title, children }  ) {
 
 
     return <>  <TopAppBar>
@@ -28,7 +26,7 @@ function AppBar(props ) {
           {/*      <TopAppBarSection alignStart>
 
                 </TopAppBarSection>*/}
-                {props.children}
+                {children}
             </TopAppBarRow>
         </TopAppBar>
         <TopAppBarFixedAdjust /></>

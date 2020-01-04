@@ -5,6 +5,7 @@ import {List, SimpleListItem} from "@rmwc/list";
 import '@rmwc/avatar/avatar.css';
 import {Avatar} from '@rmwc/avatar'
 import {useAsync} from 'react-use';
+import AppBar from "./AppBar";
 
 
 function Contributors(props) {
@@ -17,6 +18,7 @@ function Contributors(props) {
         return result
     }, [full_name]);
     return <div>
+        <AppBar title="Contributors" showBackButton></AppBar>
         <List twoLine>
             {state.loading
                 ? <div>Loading...</div>
