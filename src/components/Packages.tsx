@@ -16,23 +16,10 @@ import {Swipeable} from 'react-swipeable';
 import {navigate} from '@reach/router'
 import SortPanel from './SortPanel'
 import {useAsync} from 'react-use';
+import AppBar from "./AppBar";
 
 dayjs.extend(relativeTime)
 
-// function useLoader() {
-//     const [data, setData] = useState('loading')
-//
-//     useEffect(() => {
-//         // Update the document title using the browser API
-//         // store.fetchNews();
-//         const fetchData = async () => {
-//             await store.fetchPackages()
-//             setData('done')
-//         }
-//         fetchData()
-//     }, [])
-//     return data
-// }
 
 export const FullHeight = styled.div`
   display: flex;
@@ -75,16 +62,17 @@ function Packages(props) {
          await store.fetchPackages(tag)
         return 'done'
     }, [tag]);
-    // let data = useLoader()
-    // let list: any = Array.from(store.packages)
-    //   let content = <div>hello</div>
+
     let content = (
         <CenteredFlex>
             <CircularProgress/>
         </CenteredFlex>
     )
     if (!state.loading && !state.error) {
+      let name =   store.tags.get(tag).name;
         content = (<>
+                <AppBar title={name} showBackButton></AppBar>
+                <SortPanel/>
                 <Snackbar
                     open={open}
                     onClose={evt => setOpen(false)}
@@ -201,7 +189,7 @@ function Packages(props) {
 
 
     return <FullHeight>
-        <SortPanel/>
+
 
         {content}</FullHeight>
 }

@@ -5,7 +5,6 @@
 		"@reach/router": "^1.2.1",
 		"@rmwc/button": "^5.7.2",
 		"@rmwc/data-table": "^5.7.2",
-		"antd": "3.26.4",
 		"axios": "^0.19.0",
 		"d3": "^5.15.0",
 		"dayjs": "1.8.18",

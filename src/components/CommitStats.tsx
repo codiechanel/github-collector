@@ -1,11 +1,11 @@
 import * as React from 'react'
+import {useRef} from 'react'
 import {observer} from 'mobx-react'
-import {useRef, useState} from "react";
-import {useEffect} from "react";
-import * as d3  from 'd3'
-import { line, curveBasis }  from 'd3'
+import * as d3 from 'd3'
+import {curveBasis, line} from 'd3'
 import store from "../common/Store";
 import {useAsync} from 'react-use';
+import AppBar from "./AppBar";
 
 
 function renderLineChart(svg, data ) {
@@ -88,6 +88,7 @@ function CommitStats(props) {
     }
 
     return <div>
+        <AppBar title="Commit Stats" showBackButton></AppBar>
         <svg ref={inputEl} height={innerHeight} width={innerWidth} fill="white">
 
         </svg>

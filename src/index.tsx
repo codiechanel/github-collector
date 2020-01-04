@@ -1,19 +1,7 @@
-import {navigate, Router} from '@reach/router'
-import {Button} from '@rmwc/button'
+import {Router} from '@reach/router'
 import '@rmwc/circular-progress/circular-progress.css'
-import {SimpleDialog} from '@rmwc/dialog'
-import {TextField} from '@rmwc/textfield'
 import {ThemeProvider} from '@rmwc/theme'
-import {
-    TopAppBar,
-    TopAppBarActionItem,
-    TopAppBarFixedAdjust,
-    TopAppBarRow,
-    TopAppBarSection,
-    TopAppBarTitle
-} from '@rmwc/top-app-bar'
 import * as React from 'react'
-import {useRef} from 'react'
 import * as ReactDOM from 'react-dom'
 import styled, {createGlobalStyle} from 'styled-components'
 import palette from './common/Palette'
@@ -24,8 +12,6 @@ import SearchPage from "./components/SearchPage";
 import CommitStats from "./components/CommitStats";
 import Comparison from "./components/Comparison";
 import Contributors from "./components/Contributors";
-import api from "./common/Api";
-import Platforms from "./components/Platform";
 import NpmSearch from "./components/NpmSearch";
 
 const GlobalStyle = createGlobalStyle`
@@ -103,32 +89,7 @@ font-family:"Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",  "Oxygen",
 						}
 `
 
-function CreateTagButton(props) {
-    const inputEl = useRef(null)
-    const [open, setOpen] = React.useState(false)
-    return (
-        <>
-            <SimpleDialog
-                title="This is a simple dialog"
-                // body="You can pass the body prop or children."
-                open={open}
-                onClose={evt => {
-                    if (evt.detail.action === 'accept') {
-                        store.saveTag(inputEl.current.value)
-                    }
 
-                    setOpen(false)
-                }}
-            >
-                <TextField inputRef={inputEl} label="standard..."/>
-            </SimpleDialog>
-
-            <Button raised onClick={() => setOpen(true)}>
-                Create Tag
-            </Button>
-        </>
-    )
-}
 
 type PanelProp = {
     flexDirection: string
@@ -184,7 +145,8 @@ function App(props) {
         >
             <GlobalStyle/>
             <Panel flexDirection="column">
-                 <TopAppBar>
+
+         {/*        <TopAppBar>
           <TopAppBarRow>
             <TopAppBarSection>
               <TopAppBarTitle>NewsApp</TopAppBarTitle>
@@ -201,7 +163,7 @@ function App(props) {
             </TopAppBarSection>
           </TopAppBarRow>
         </TopAppBar>
-        <TopAppBarFixedAdjust />
+        <TopAppBarFixedAdjust />*/}
 {/*<Platforms/>*/}
 
                 <Router>
