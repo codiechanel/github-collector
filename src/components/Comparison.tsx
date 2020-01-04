@@ -13,6 +13,7 @@ import '@rmwc/data-table/data-table.css';
 import store from "../common/Store";
 import SortPanel from "./SortPanel";
 import {Typography} from "@rmwc/typography";
+import AppBar from "./AppBar";
 
 function Comparison(props) {
     console.log('render')
@@ -27,6 +28,7 @@ function Comparison(props) {
         'dependents_count',
         'dependent_repos_count']
     return <div>
+        <AppBar title="Comparison" showBackButton></AppBar>
         <SortPanel/>
         <DataTable>
             <DataTableContent>

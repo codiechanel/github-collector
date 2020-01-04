@@ -146,24 +146,7 @@ function App(props) {
             <GlobalStyle/>
             <Panel flexDirection="column">
 
-         {/*        <TopAppBar>
-          <TopAppBarRow>
-            <TopAppBarSection>
-              <TopAppBarTitle>NewsApp</TopAppBarTitle>
-            </TopAppBarSection>
-            <TopAppBarSection alignEnd>
-                <CreateTagButton />
-              <TopAppBarActionItem
-                onClick={() => {
-                  // api.fetchGoogleNews(item.keyword);
-                  navigate(`searchPage`, { replace: false })
-                }}
-                icon="search"
-              />
-            </TopAppBarSection>
-          </TopAppBarRow>
-        </TopAppBar>
-        <TopAppBarFixedAdjust />*/}
+
 {/*<Platforms/>*/}
 
                 <Router>
@@ -171,7 +154,7 @@ function App(props) {
                     <Packages path="/packages/:tag"/>
                     <SearchPage path="searchPage"/>
                     <CommitStats path="/commitStats/:full_name"/>
-                    <Comparison path="comparison"/>
+                    <Comparison path="/comparison"/>
                     <Contributors path="/contributors/:full_name"/>
                     <NpmSearch path="/npmSearch"/>
                 </Router>

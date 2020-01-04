@@ -40,6 +40,7 @@
 	"scripts": {
 		"build-prod": "webpack --config webpack.config.prod.js",
 		"build-watch": "webpack --watch --config webpack.config.js",
+		"deploy-now": "now --prod",
 		"dev": "yarn build-watch & yarn live-server",
 		"live-server": "live-server  -watch=/:public/bundle.js  --mount=/:public --ignore=node_modules,src",
 		"dev99": "concurrently  \"yarn build-watch\" \"yarn live-server\"",

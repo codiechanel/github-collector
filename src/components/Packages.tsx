@@ -84,7 +84,7 @@ function Packages(props) {
                         />
                     }
                 />
-                <Button onClick={() => navigate('comparison')}>compare</Button>
+                <Button onClick={() => navigate('/comparison')}>compare</Button>
             <List twoLine>
                 {store.packagesArray.map(([key, item]) => {
                     // language JavaScript
